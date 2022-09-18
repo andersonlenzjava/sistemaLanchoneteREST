@@ -2,15 +2,29 @@ package com.lanchonete.sistema.model.item;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import com.lanchonete.sistema.model.ingrediente.LancheMolho;
 import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
 import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 
-public class Lanche implements CalculoPrato  {
+@Entity
+public class Lanche implements CalculoPrato {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Embedded
 	private Item item;
+	@ManyToOne
 	private LancheTipoPao lancheTipoPao;
+	@ManyToOne
 	private LancheRecheio lancheRecheio;
+	@ManyToOne
 	private LancheMolho lancheMolho;
 
 	public Lanche(LancheTipoPao lancheTipoPao, LancheRecheio lancheRecheio, LancheMolho lancheMolho) {
@@ -29,8 +43,8 @@ public class Lanche implements CalculoPrato  {
 	@Override
 	public double calculaPesoPrato() {
 		return lancheTipoPao.getIngrediente().getPeso() +
-				lancheRecheio.getIngrediente().getPeso() +
-				lancheMolho.getIngrediente().getPeso();
+			   lancheRecheio.getIngrediente().getPeso() +
+			   lancheMolho.getIngrediente().getPeso();
 	}
 
 	public Item getItem() {

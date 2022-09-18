@@ -2,15 +2,29 @@ package com.lanchonete.sistema.model.item;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import com.lanchonete.sistema.model.ingrediente.SalgadinhoMassa;
 import com.lanchonete.sistema.model.ingrediente.SalgadinhoRecheio;
 import com.lanchonete.sistema.model.ingrediente.SalgadinhoTipoPreparo;
 
+@Entity
 public class Salgadinho implements CalculoPrato  {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Embedded
 	private Item item;
+	@ManyToOne
 	private SalgadinhoMassa salgadinhoMassa;
+	@ManyToOne
 	private SalgadinhoRecheio salgadinhoRecheio;
+	@ManyToOne
 	private SalgadinhoTipoPreparo salgadinhoTipoPreparo;
 	
 	public Salgadinho(SalgadinhoMassa salgadinhoMassa, SalgadinhoRecheio salgadinhoRecheio,
@@ -30,8 +44,8 @@ public class Salgadinho implements CalculoPrato  {
 	@Override
 	public double calculaPesoPrato() {
 		return salgadinhoMassa.getIngrediente().getPeso() +
-				salgadinhoRecheio.getIngrediente().getPeso() +
-				salgadinhoTipoPreparo.getIngrediente().getPeso();
+			   salgadinhoRecheio.getIngrediente().getPeso() +
+			   salgadinhoTipoPreparo.getIngrediente().getPeso();
 	}
 
 	public Item getItem() {
@@ -58,5 +72,4 @@ public class Salgadinho implements CalculoPrato  {
 	public void setSalgadinhoTipoPreparo(SalgadinhoTipoPreparo salgadinhoTipoPreparo) {
 		this.salgadinhoTipoPreparo = salgadinhoTipoPreparo;
 	}
-	
 }

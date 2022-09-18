@@ -2,9 +2,11 @@ package com.lanchonete.sistema.model.ingrediente;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Ingrediente {
 
-	private Long id;
 	private BigDecimal precoVenda;
 	private String dataValidade;
 	private double peso;
@@ -15,12 +17,6 @@ public class Ingrediente {
 		this.peso = peso;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;
 	}

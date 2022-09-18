@@ -2,8 +2,18 @@ package com.lanchonete.sistema.model.ingrediente;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class LancheTipoPao {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Embedded
 	private Ingrediente ingrediente;
 	public String tipoPao;
 
@@ -23,5 +33,11 @@ public class LancheTipoPao {
 	}
 	public void setTipoPao(String tipoPao) {
 		this.tipoPao = tipoPao;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

@@ -2,15 +2,29 @@ package com.lanchonete.sistema.model.item;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import com.lanchonete.sistema.model.ingrediente.PizzaBorda;
 import com.lanchonete.sistema.model.ingrediente.PizzaMolho;
 import com.lanchonete.sistema.model.ingrediente.PizzaRecheio;
 
+@Entity
 public class Pizza implements CalculoPrato  {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Embedded
 	private Item item;
+	@ManyToOne
 	private PizzaBorda pizzaBorda;
+	@ManyToOne
 	private PizzaMolho pizzaMolho;
+	@ManyToOne
 	private PizzaRecheio pizzaRecheio;
 	
 	public Pizza(PizzaBorda pizzaBorda, PizzaMolho pizzaMolho, PizzaRecheio pizzaRecheio) {
@@ -29,8 +43,8 @@ public class Pizza implements CalculoPrato  {
 	@Override
 	public double calculaPesoPrato() {
 		return pizzaBorda.getIngrediente().getPeso() +
-				pizzaMolho.getIngrediente().getPeso() +
-				pizzaRecheio.getIngrediente().getPeso();
+			   pizzaMolho.getIngrediente().getPeso() +
+			   pizzaRecheio.getIngrediente().getPeso();
 	}
 
 	public Item getItem() {
