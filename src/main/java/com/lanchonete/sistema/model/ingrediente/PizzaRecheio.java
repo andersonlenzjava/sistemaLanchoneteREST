@@ -21,6 +21,9 @@ public class PizzaRecheio {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
 		this.tipoRecheio = tipoRecheio;
 	}
+	
+	public PizzaRecheio() {
+	}
 
 	public Ingrediente getIngrediente() {
 		return ingrediente;

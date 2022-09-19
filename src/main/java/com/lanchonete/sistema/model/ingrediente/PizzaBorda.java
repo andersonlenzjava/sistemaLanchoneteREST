@@ -15,11 +15,14 @@ public class PizzaBorda {
 	private Long id;
 	@Embedded
 	private Ingrediente ingrediente;
-	public boolean temBorda;
+	private String tipoBorda;
 
-	public PizzaBorda(BigDecimal precoVenda, String dataValidade, double peso, boolean temBorda) {
+	public PizzaBorda(BigDecimal precoVenda, String dataValidade, double peso, String tipoBorda) {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
-		this.temBorda = temBorda;
+		this.tipoBorda = tipoBorda;
+	}
+	
+	public PizzaBorda() {
 	}
 
 	public Ingrediente getIngrediente() {
@@ -28,25 +31,17 @@ public class PizzaBorda {
 	public void setIngrediente(Ingrediente ingrediente) {
 		this.ingrediente = ingrediente;
 	}
-	public boolean isTemBorda() {
-		return temBorda;
-	}
-	public void setTemBorda(boolean temBorda) {
-		this.temBorda = temBorda;
-	}
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNome() {
-		String nomeBorda;
-		if (temBorda) {
-			nomeBorda = "Tem borda";
-		} else {
-			nomeBorda = "Não tem borda";
-		}
-		return nomeBorda;
+	public String getTipoBorda() {
+		return tipoBorda;
 	}
+	public void setTipoBorda(String tipoBorda) {
+		this.tipoBorda = tipoBorda;
+	}
+	
 }

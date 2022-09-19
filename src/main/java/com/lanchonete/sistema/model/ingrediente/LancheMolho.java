@@ -21,6 +21,9 @@ public class LancheMolho {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
 		this.tipoMolho = tipoMolho;
 	}
+	
+	public LancheMolho() {
+	}
 
 	public Ingrediente getIngrediente() {
 		return ingrediente;

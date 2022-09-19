@@ -22,6 +22,9 @@ public class SalgadinhoMassa {
 		this.tipoMassa = tipoMassa;
 	}
 	
+	public SalgadinhoMassa() {
+	}
+	
 	public Ingrediente getIngrediente() {
 		return ingrediente;
 	}

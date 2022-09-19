@@ -22,6 +22,9 @@ public class LancheTipoPao {
 		this.tipoPao = tipoPao;
 	}
 
+	public LancheTipoPao() {
+	}
+	
 	public Ingrediente getIngrediente() {
 		return ingrediente;
 	}

@@ -4,20 +4,20 @@ import java.math.BigDecimal;
 
 import org.springframework.data.domain.Page;
 
-import com.lanchonete.sistema.model.ingrediente.LancheMolho;
+import com.lanchonete.sistema.model.ingrediente.PizzaMolho;
 
-public class LancheMolhoDto {
+public class PizzaMolhoDto {
 
 	String tipoMolho;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
-	public LancheMolhoDto(LancheMolho lancheMolho) {
-		this.tipoMolho = lancheMolho.getTipoMolho();
-		this.precoVenda	= lancheMolho.getIngrediente().getPrecoVenda();
-		this.dataValidade = lancheMolho.getIngrediente().getDataValidade();
-		this.peso = lancheMolho.getIngrediente().getPeso();
+	public PizzaMolhoDto(PizzaMolho pizzaMolho) {
+		this.tipoMolho = pizzaMolho.getTipoMolho();
+		this.precoVenda	= pizzaMolho.getIngrediente().getPrecoVenda();
+		this.dataValidade = pizzaMolho.getIngrediente().getDataValidade();
+		this.peso = pizzaMolho.getIngrediente().getPeso();
 	}
 
 	public String getTipoMolho() {
@@ -45,10 +45,11 @@ public class LancheMolhoDto {
 		this.peso = peso;
 	}
 
-	public static Page<LancheMolhoDto> converter(Page<LancheMolho> molhos) {
-		return molhos.map(LancheMolhoDto::new);
+	public static Page<PizzaMolhoDto> converter(Page<PizzaMolho> pizzaMolho) {
+		return pizzaMolho.map(PizzaMolhoDto::new);
 	}
-	public static LancheMolhoDto converterUmLancheMolho(LancheMolho lancheMolho) {
-		return new LancheMolhoDto(lancheMolho);
+	public static PizzaMolhoDto converterUmLancheMolho(PizzaMolho pizzaMolho) {
+		return new PizzaMolhoDto(pizzaMolho);
 	}
+	
 }

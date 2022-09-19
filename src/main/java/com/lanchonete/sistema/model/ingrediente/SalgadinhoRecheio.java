@@ -22,6 +22,9 @@ public class SalgadinhoRecheio {
 		this.tipoRecheio = tipoRecheio;
 	}
 	
+	public SalgadinhoRecheio() {
+	}
+	
 	public Ingrediente getIngrediente() {
 		return ingrediente;
 	}

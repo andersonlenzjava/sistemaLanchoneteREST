@@ -21,6 +21,9 @@ public class LancheRecheio {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
 		this.tipoRecheio = tipoRecheio;
 	}
+	
+	public LancheRecheio() {
+	}
 
 	public Ingrediente getIngrediente() {
 		return ingrediente;

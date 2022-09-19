@@ -21,6 +21,9 @@ public class PizzaMolho {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
 		this.tipoMolho = tipoMolho;
 	}
+	
+	public PizzaMolho() {
+	}
 
 	public Ingrediente getIngrediente() {
 		return ingrediente;

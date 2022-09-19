@@ -13,12 +13,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.lanchonete.sistema.dto.ingredientes.LancheMolhoDto;
+import com.lanchonete.sistema.dto.ingredientes.LancheRecheioDto;
+import com.lanchonete.sistema.dto.ingredientes.LancheTipoPaoDto;
+import com.lanchonete.sistema.form.ingredientes.LancheMolhoForm;
+import com.lanchonete.sistema.form.ingredientes.LancheRecheioForm;
+import com.lanchonete.sistema.form.ingredientes.LancheTipoPaoForm;
 import com.lanchonete.sistema.service.ingredientes.LancheService;
 
 @RestController
@@ -29,79 +36,98 @@ public class LancheController {
 	private LancheService lancheService;
 	
 	@GetMapping("/molho")
-	public Page<IngredienteDto> listarMolho(@RequestParam(required = false) String tipoMolho, 
+	public Page<LancheMolhoDto> listarMolho(@RequestParam(required = false) String tipoMolho, 
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		return lancheService.listarMolho(tipoMolho, paginacao);
+		return lancheService.listarLancheMolho(tipoMolho, paginacao);
 	}
 	
 	@GetMapping("/molho/{id}")
-	public ResponseEntity<IngredienteDto> detalharMolho(@PathVariable Long id) {
-		return lancheService.detalharMolhoPorId(id);
+	public ResponseEntity<LancheMolhoDto> detalharMolho(@PathVariable Long id) {
+		return lancheService.detalharLancheMolhoPorId(id);
 	}
 
 	@PostMapping("/molho")
 	@Transactional
-	public ResponseEntity<IngredienteDto> cadastrarMolho(@RequestBody @Valid IngredienteForm ingredienteForm,
+	public ResponseEntity<LancheMolhoDto> cadastrarMolho(@RequestBody @Valid LancheMolhoForm lancheMolhoForm,
 			UriComponentsBuilder uriBuilder) throws Exception {
-		return lancheService.cadastrarMolho(ingredienteForm, uriBuilder);
+		return lancheService.cadastrarLancheMolho(lancheMolhoForm, uriBuilder);
 	}
+	
+	@PutMapping("/molho/{id}")
+	@Transactional
+	public ResponseEntity<LancheMolhoDto> atualizarLancheMolho(@PathVariable Long id, @RequestBody @Valid LancheMolhoForm lancheMolhoForm) {
+		return lancheService.atualizarLancheMolho(id, lancheMolhoForm);
+	}
+	
 
 	@DeleteMapping("/molho/{id}")
 	@Transactional
-	public ResponseEntity<?> removerMolho(@PathVariable Long id) {
-		return lancheService.removerMolho(id);
+	public ResponseEntity<?> removerLancheMolho(@PathVariable Long id) {
+		return lancheService.removerLancheMolho(id);
 	}
 	
 	//================================================================================================================//
 	
 	@GetMapping("/recheio")
-	public Page<IngredienteDto> listarRecheio(@RequestParam(required = false) String tipoRecheio, 
+	public Page<LancheRecheioDto> listarLancheRecheio(@RequestParam(required = false) String tipoRecheio, 
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		return lancheService.listarRecheio(tipoRecheio, paginacao);
+		return lancheService.listarLancheRecheio(tipoRecheio, paginacao);
 	}
 	
 	@GetMapping("/recheio/{id}")
-	public ResponseEntity<IngredienteDto> detalharRecheio(@PathVariable Long id) {
-		return lancheService.detalharRecheioPorId(id);
+	public ResponseEntity<LancheRecheioDto> detalharLancheRecheio(@PathVariable Long id) {
+		return lancheService.detalharLancheRecheioPorId(id);
 	}
 
 	@PostMapping("/recheio")
 	@Transactional
-	public ResponseEntity<IngredienteDto> cadastrarRecheio(@RequestBody @Valid IngredienteForm ingredienteForm,
+	public ResponseEntity<LancheRecheioDto> cadastraLancheRecheio(@RequestBody @Valid LancheRecheioForm lancheRecheioForm,
 			UriComponentsBuilder uriBuilder) throws Exception {
-		return lancheService.cadastrarRecheio(ingredienteForm, uriBuilder);
+		return lancheService.cadastrarLancheRecheio(lancheRecheioForm, uriBuilder);
+	}
+	
+	@PutMapping("/molho/{id}")
+	@Transactional
+	public ResponseEntity<LancheRecheioDto> atualizarLancheRecheio(@PathVariable Long id, @RequestBody @Valid LancheRecheioForm lancheRecheioForm) {
+		return lancheService.atualizarLancheRecheio(id, lancheRecheioForm);
 	}
 
 	@DeleteMapping("/recheio/{id}")
 	@Transactional
-	public ResponseEntity<?> removerRecheio(@PathVariable Long id) {
-		return lancheService.removerRecheio(id);
+	public ResponseEntity<?> removerLancheRecheio(@PathVariable Long id) {
+		return lancheService.removerLancheRecheio(id);
 	}
 	
 	//================================================================================================================//
 	
 	@GetMapping("/tipoPao")
-	public Page<IngredienteDto> listarTipoPao(@RequestParam(required = false) String tipoPao, 
+	public Page<LancheTipoPaoDto> listarLancheTipoPao(@RequestParam(required = false) String tipoPao, 
 			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-		return lancheService.listarTipoPao(tipoRecheio, paginacao);
+		return lancheService.listarLancheTipoPao(tipoPao, paginacao);
 	}
 	
 	@GetMapping("/tipoPao/{id}")
-	public ResponseEntity<IngredienteDto> detalharTipoPao(@PathVariable Long id) {
-		return lancheService.detalharTipoPaoPorId(id);
+	public ResponseEntity<LancheTipoPaoDto> detalharLancheTipoPao(@PathVariable Long id) {
+		return lancheService.detalharLancheTipoPaoPorId(id);
 	}
 
 	@PostMapping("/tipoPao")
 	@Transactional
-	public ResponseEntity<IngredienteDto> cadastrarTipoPao(@RequestBody @Valid IngredienteForm ingredienteForm,
+	public ResponseEntity<LancheTipoPaoDto> cadastrarLancheTipoPao(@RequestBody @Valid LancheTipoPaoForm lancheTipoPaoForm,
 			UriComponentsBuilder uriBuilder) throws Exception {
-		return lancheService.cadastrarTipoPao(ingredienteForm, uriBuilder);
+		return lancheService.cadastrarLancheTipoPao(lancheTipoPaoForm, uriBuilder);
+	}
+	
+	@PutMapping("/tipoPao/{id}")
+	@Transactional
+	public ResponseEntity<LancheTipoPaoDto> atualizarLancheTipoPao(@PathVariable Long id, @RequestBody @Valid LancheTipoPaoForm lancheTipoPaoForm) {
+		return lancheService.atualizarLancheTipoPao(id, lancheTipoPaoForm);
 	}
 
 	@DeleteMapping("/tipoPao/{id}")
 	@Transactional
-	public ResponseEntity<?> removerTipoPao(@PathVariable Long id) {
-		return lancheService.removerTipoPao(id);
+	public ResponseEntity<?> removerLancheTipoPao(@PathVariable Long id) {
+		return lancheService.removerLancheTipoPao(id);
 	}
 	
 }

@@ -10,14 +10,14 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lanchonete.sistema.model.ingrediente.LancheMolho;
+import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 
-public class LancheMolhoForm {
+public class LancheTipoPaoForm {
 
 	@NotNull
 	@NotEmpty
 	@Length(min = 3, max = 80)
-	String tipoMolho;
+	String tipoPao;
 	
 	@DecimalMin(value = "0.1", inclusive = true)
     @Digits(integer=3, fraction=2)
@@ -31,7 +31,7 @@ public class LancheMolhoForm {
 	double peso;
 	
 	public void setTipoMolho(String tipoMolho) {
-		this.tipoMolho = tipoMolho;
+		this.tipoPao = tipoMolho;
 	}
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
@@ -42,8 +42,8 @@ public class LancheMolhoForm {
 	public void setPeso(double peso) {
 		this.peso = peso;
 	}
-	public String getTipoMolho() {
-		return tipoMolho;
+	public String getTipoPao() {
+		return tipoPao;
 	}
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;
@@ -55,8 +55,8 @@ public class LancheMolhoForm {
 		return peso;
 	}
 	
-	public LancheMolho converter() {
-		return new LancheMolho(precoVenda, dataValidade, peso, tipoMolho);
+	public LancheTipoPao converter() {
+		return new LancheTipoPao(precoVenda, dataValidade, peso, tipoPao);
 	}
 	
 }

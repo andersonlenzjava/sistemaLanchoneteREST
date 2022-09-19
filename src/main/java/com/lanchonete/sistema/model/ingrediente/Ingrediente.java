@@ -16,6 +16,10 @@ public class Ingrediente {
 		this.dataValidade = dataValidade;
 		this.peso = peso;
 	}
+	
+	public Ingrediente() {
+	}
+	
 
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;

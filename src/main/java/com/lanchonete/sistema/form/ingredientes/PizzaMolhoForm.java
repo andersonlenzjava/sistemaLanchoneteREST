@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lanchonete.sistema.model.ingrediente.LancheMolho;
+import com.lanchonete.sistema.model.ingrediente.PizzaMolho;
 
-public class LancheMolhoForm {
+public class PizzaMolhoForm {
 
 	@NotNull
 	@NotEmpty
@@ -54,9 +54,8 @@ public class LancheMolhoForm {
 	public double getPeso() {
 		return peso;
 	}
-	
-	public LancheMolho converter() {
-		return new LancheMolho(precoVenda, dataValidade, peso, tipoMolho);
+	public PizzaMolho converter() {
+		return new PizzaMolho(precoVenda, dataValidade, peso, tipoMolho);
 	}
 	
 }

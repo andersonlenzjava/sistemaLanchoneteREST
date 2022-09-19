@@ -21,6 +21,9 @@ public class SalgadinhoTipoPreparo {
 		this.ingrediente = new Ingrediente(precoVenda, dataValidade, peso);
 		this.tipoPreparo = tipoPreparo;
 	}
+	
+	public SalgadinhoTipoPreparo() {
+	}
 
 	public Ingrediente getIngrediente() {
 		return ingrediente;

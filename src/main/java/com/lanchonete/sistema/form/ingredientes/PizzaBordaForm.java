@@ -10,28 +10,28 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lanchonete.sistema.model.ingrediente.LancheMolho;
+import com.lanchonete.sistema.model.ingrediente.PizzaBorda;
 
-public class LancheMolhoForm {
+public class PizzaBordaForm {
 
 	@NotNull
 	@NotEmpty
 	@Length(min = 3, max = 80)
-	String tipoMolho;
+	String tipoBorda;
 	
-	@DecimalMin(value = "0.1", inclusive = true)
+	@DecimalMin(value = "0.0", inclusive = true)
     @Digits(integer=3, fraction=2)
 	BigDecimal precoVenda;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	String dataValidade;
 	
-	@DecimalMin(value = "0.1", inclusive = true)
+	@DecimalMin(value = "0.0", inclusive = true)
     @Digits(integer=4, fraction=2)
 	double peso;
 	
-	public void setTipoMolho(String tipoMolho) {
-		this.tipoMolho = tipoMolho;
+	public void setTipoBorda(String tipoBorda) {
+		this.tipoBorda = tipoBorda;
 	}
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
@@ -42,8 +42,8 @@ public class LancheMolhoForm {
 	public void setPeso(double peso) {
 		this.peso = peso;
 	}
-	public String getTipoMolho() {
-		return tipoMolho;
+	public String getTipoBorda() {
+		return tipoBorda;
 	}
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;
@@ -55,8 +55,8 @@ public class LancheMolhoForm {
 		return peso;
 	}
 	
-	public LancheMolho converter() {
-		return new LancheMolho(precoVenda, dataValidade, peso, tipoMolho);
+	public PizzaBorda converter() {
+		return new PizzaBorda(precoVenda, dataValidade, peso, tipoBorda);
 	}
 	
 }
