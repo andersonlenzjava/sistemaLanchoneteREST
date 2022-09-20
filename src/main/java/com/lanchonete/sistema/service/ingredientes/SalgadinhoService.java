@@ -70,7 +70,7 @@ public class SalgadinhoService {
 	}
 	
 	//atualizar
-	public ResponseEntity<SalgadinhoMassaDto> atualizarPizzaRecheio(Long id,
+	public ResponseEntity<SalgadinhoMassaDto> atualizarSalgadinhoMassa(Long id,
 			@Valid SalgadinhoMassaForm salgadinhoMassaForm) {
 		Optional<SalgadinhoMassa> salgadinhoMassaOptional = salgadinhoMassaRepository.findById(id);
 		if (salgadinhoMassaOptional.isPresent()) {
@@ -140,7 +140,7 @@ public class SalgadinhoService {
 	}
 	
 	//atualizar
-	public ResponseEntity<SalgadinhoRecheioDto> atualizarPizzaRecheio(Long id,
+	public ResponseEntity<SalgadinhoRecheioDto> atualizarSalgadinhoRecheio(Long id,
 			@Valid SalgadinhoRecheioForm salgadinhoRecheioForm) {
 		Optional<SalgadinhoRecheio> salgadinhoRecheioOptional = salgadinhoRecheioRepository.findById(id);
 		if (salgadinhoRecheioOptional.isPresent()) {
@@ -210,7 +210,7 @@ public class SalgadinhoService {
 	}
 
 	//atualizar
-	public ResponseEntity<SalgadinhoTipoPreparoDto> atualizarPizzaRecheio(Long id,
+	public ResponseEntity<SalgadinhoTipoPreparoDto> atualizarSalgadinhoTipoPreparo(Long id,
 			@Valid SalgadinhoTipoPreparoForm salgadinhoTipoPreparoForm) {
 		Optional<SalgadinhoTipoPreparo> salgadinhoTipoPreparoOptional = salgadinhoTipoPreparoRepository.findById(id);
 		if (salgadinhoTipoPreparoOptional.isPresent()) {

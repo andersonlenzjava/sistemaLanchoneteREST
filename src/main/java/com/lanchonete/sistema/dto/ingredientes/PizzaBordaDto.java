@@ -8,12 +8,14 @@ import com.lanchonete.sistema.model.ingrediente.PizzaBorda;
 
 public class PizzaBordaDto {
 
+	Long id;
 	String temBorda;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
 	public PizzaBordaDto(PizzaBorda pizzaBorda) {
+		this.id = pizzaBorda.getId();
 		this.temBorda = pizzaBorda.getTipoBorda();
 		this.precoVenda	= pizzaBorda.getIngrediente().getPrecoVenda();
 		this.dataValidade = pizzaBorda.getIngrediente().getDataValidade();
@@ -43,6 +45,12 @@ public class PizzaBordaDto {
 	}
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Page<PizzaBordaDto> converter(Page<PizzaBorda> pizzaBorda) {

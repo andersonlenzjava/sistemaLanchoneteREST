@@ -8,12 +8,14 @@ import com.lanchonete.sistema.model.ingrediente.PizzaRecheio;
 
 public class PizzaRecheioDto {
 
+	Long id;
 	String tipoRecheio;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
 	public PizzaRecheioDto(PizzaRecheio pizzaRecheio) {
+		this.id = pizzaRecheio.getId();
 		this.tipoRecheio = pizzaRecheio.getTipoRecheio();
 		this.precoVenda	= pizzaRecheio.getIngrediente().getPrecoVenda();
 		this.dataValidade = pizzaRecheio.getIngrediente().getDataValidade();
@@ -43,6 +45,12 @@ public class PizzaRecheioDto {
 	}
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Page<PizzaRecheioDto> converter(Page<PizzaRecheio> pizzaRecheio) {

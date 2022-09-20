@@ -1,4 +1,4 @@
-package com.lanchonete.sistema.model.base;
+package com.lanchonete.sistema.model.pedido;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

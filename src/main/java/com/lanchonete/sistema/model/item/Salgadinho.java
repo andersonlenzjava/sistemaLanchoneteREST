@@ -72,4 +72,10 @@ public class Salgadinho implements CalculoPrato  {
 	public void setSalgadinhoTipoPreparo(SalgadinhoTipoPreparo salgadinhoTipoPreparo) {
 		this.salgadinhoTipoPreparo = salgadinhoTipoPreparo;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

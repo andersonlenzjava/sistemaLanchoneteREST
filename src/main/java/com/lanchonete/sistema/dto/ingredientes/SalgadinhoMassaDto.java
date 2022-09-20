@@ -8,12 +8,14 @@ import com.lanchonete.sistema.model.ingrediente.SalgadinhoMassa;
 
 public class SalgadinhoMassaDto {
 
+	Long id;
 	String tipoMassa;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
 	public SalgadinhoMassaDto(SalgadinhoMassa salgadinhoMassa) {
+		this.id = salgadinhoMassa.getId();
 		this.tipoMassa = salgadinhoMassa.getTipoMassa();
 		this.precoVenda	= salgadinhoMassa.getIngrediente().getPrecoVenda();
 		this.dataValidade = salgadinhoMassa.getIngrediente().getDataValidade();
@@ -43,6 +45,12 @@ public class SalgadinhoMassaDto {
 	}
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Page<SalgadinhoMassaDto> converter(Page<SalgadinhoMassa> salgadinhoMassa) {

@@ -71,4 +71,10 @@ public class Lanche implements CalculoPrato {
 	public void setLancheMolho(LancheMolho lancheMolho) {
 		this.lancheMolho = lancheMolho;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

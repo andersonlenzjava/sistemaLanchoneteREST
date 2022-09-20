@@ -29,7 +29,7 @@ import com.lanchonete.sistema.form.ingredientes.SalgadinhoTipoPreparoForm;
 import com.lanchonete.sistema.service.ingredientes.SalgadinhoService;
 
 @RestController
-@RequestMapping("/lanches")
+@RequestMapping("/salgadinhos")
 public class SalgadinhoController {
 
 	@Autowired
@@ -55,8 +55,8 @@ public class SalgadinhoController {
 	
 	@PutMapping("/massa/{id}")
 	@Transactional
-	public ResponseEntity<SalgadinhoMassaDto> atualizarPizzaRecheio(@PathVariable Long id, @RequestBody @Valid SalgadinhoMassaForm salgadinhoMassaForm) {
-		return salgadinhoService.atualizarPizzaRecheio(id, salgadinhoMassaForm);
+	public ResponseEntity<SalgadinhoMassaDto> atualizarSalgadinhoMassa(@PathVariable Long id, @RequestBody @Valid SalgadinhoMassaForm salgadinhoMassaForm) {
+		return salgadinhoService.atualizarSalgadinhoMassa(id, salgadinhoMassaForm);
 	}
 
 	@DeleteMapping("/massa/{id}")
@@ -87,8 +87,8 @@ public class SalgadinhoController {
 	
 	@PutMapping("/recheio/{id}")
 	@Transactional
-	public ResponseEntity<SalgadinhoRecheioDto> atualizarPizzaRecheio(@PathVariable Long id, @RequestBody @Valid SalgadinhoRecheioForm salgadinhoRecheioForm) {
-		return salgadinhoService.atualizarPizzaRecheio(id, salgadinhoRecheioForm);
+	public ResponseEntity<SalgadinhoRecheioDto> atualizarSalgadinhoRecheio(@PathVariable Long id, @RequestBody @Valid SalgadinhoRecheioForm salgadinhoRecheioForm) {
+		return salgadinhoService.atualizarSalgadinhoRecheio(id, salgadinhoRecheioForm);
 	}
 
 	@DeleteMapping("/recheio/{id}")
@@ -119,8 +119,8 @@ public class SalgadinhoController {
 	
 	@PutMapping("/tipoPreparo/{id}")
 	@Transactional
-	public ResponseEntity<SalgadinhoTipoPreparoDto> atualizarPizzaRecheio(@PathVariable Long id, @RequestBody @Valid SalgadinhoTipoPreparoForm salgadinhoTipoPreparoForm) {
-		return salgadinhoService.atualizarPizzaRecheio(id, salgadinhoTipoPreparoForm);
+	public ResponseEntity<SalgadinhoTipoPreparoDto> atualizarSalgadinhoTipoPreparo(@PathVariable Long id, @RequestBody @Valid SalgadinhoTipoPreparoForm salgadinhoTipoPreparoForm) {
+		return salgadinhoService.atualizarSalgadinhoTipoPreparo(id, salgadinhoTipoPreparoForm);
 	}
 
 	@DeleteMapping("/tipoPreparo/{id}")

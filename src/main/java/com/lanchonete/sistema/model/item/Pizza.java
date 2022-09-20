@@ -71,4 +71,10 @@ public class Pizza implements CalculoPrato  {
 	public void setPizzaRecheio(PizzaRecheio pizzaRecheio) {
 		this.pizzaRecheio = pizzaRecheio;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

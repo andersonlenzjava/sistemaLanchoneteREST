@@ -86,7 +86,7 @@ public class LancheController {
 		return lancheService.cadastrarLancheRecheio(lancheRecheioForm, uriBuilder);
 	}
 	
-	@PutMapping("/molho/{id}")
+	@PutMapping("/recheio/{id}")
 	@Transactional
 	public ResponseEntity<LancheRecheioDto> atualizarLancheRecheio(@PathVariable Long id, @RequestBody @Valid LancheRecheioForm lancheRecheioForm) {
 		return lancheService.atualizarLancheRecheio(id, lancheRecheioForm);

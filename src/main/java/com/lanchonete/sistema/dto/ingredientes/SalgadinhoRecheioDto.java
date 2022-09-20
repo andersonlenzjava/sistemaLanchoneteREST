@@ -8,12 +8,14 @@ import com.lanchonete.sistema.model.ingrediente.SalgadinhoRecheio;
 
 public class SalgadinhoRecheioDto {
 
+	Long id;
 	String tipoRecheio;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
 	public SalgadinhoRecheioDto(SalgadinhoRecheio salgadinhoRecheio) {
+		this.id = salgadinhoRecheio.getId();
 		this.tipoRecheio = salgadinhoRecheio.getTipoRecheio();
 		this.precoVenda	= salgadinhoRecheio.getIngrediente().getPrecoVenda();
 		this.dataValidade = salgadinhoRecheio.getIngrediente().getDataValidade();
@@ -43,6 +45,12 @@ public class SalgadinhoRecheioDto {
 	}
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Page<SalgadinhoRecheioDto> converter(Page<SalgadinhoRecheio> salgadinhoRecheio) {

@@ -8,12 +8,14 @@ import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 
 public class LancheTipoPaoDto {
 
+	Long id;
 	String tipoPao;
 	BigDecimal precoVenda;
 	String dataValidade;
 	double peso;
 	
 	public LancheTipoPaoDto(LancheTipoPao lancheTipoPao) {
+		this.id = lancheTipoPao.getId();
 		this.tipoPao = lancheTipoPao.getTipoPao();
 		this.precoVenda	= lancheTipoPao.getIngrediente().getPrecoVenda();
 		this.dataValidade = lancheTipoPao.getIngrediente().getDataValidade();
@@ -43,6 +45,12 @@ public class LancheTipoPaoDto {
 	}
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public static Page<LancheTipoPaoDto> converter(Page<LancheTipoPao> lancheTipoPao) {
