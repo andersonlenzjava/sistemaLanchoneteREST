@@ -10,6 +10,7 @@ import com.lanchonete.sistema.model.item.Salgadinho;
 
 public class Pedido {
 
+	private Long id;
 	private List<Lanche> listaLanche = new ArrayList<>();
 	private List<Pizza> listaPizza = new ArrayList<>();
 	private List<Salgadinho> listaSalgadinho = new ArrayList<>();
@@ -18,6 +19,9 @@ public class Pedido {
 	private BigDecimal valorPago;
 	private BigDecimal troco;
 	private StatusPedido statusPedido = StatusPedido.ABERTO;
+
+	public Pedido() {
+	}
 	
 	public Pedido(String nomeCliente) {
 		this.nomeCliente = nomeCliente;
@@ -25,38 +29,48 @@ public class Pedido {
 	
 	public void adicionaPizza(Pizza pizza) {
 		this.listaPizza.add(pizza);
+		this.statusPedido = StatusPedido.PROCESSANDO;
 	}
 
 	public void adicionaSalgadinho(Salgadinho salgadinho) {
 		this.listaSalgadinho.add(salgadinho);
+		this.statusPedido = StatusPedido.PROCESSANDO;
 	}
 
 	public void adicionaLanche(Lanche lanche) {
 		this.listaLanche.add(lanche);
+		this.statusPedido = StatusPedido.PROCESSANDO;
 	}
 	
-	public BigDecimal calculaTaxaServico() {
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void calculaTaxaServico() {
 		if (!(this.listaLanche.isEmpty())) {
-			this.listaLanche.forEach(lanche -> this.valorTotalServico = this.valorTotalServico.add(lanche.calculaPrecoPrato()));
+			this.listaLanche.forEach(lanche -> this.valorTotalServico = this.valorTotalServico.add(lanche.getItem().getTotalItem()));
 		}
 		if (!(this.listaPizza.isEmpty())) {
-			this.listaPizza.forEach(pizza -> this.valorTotalServico = this.valorTotalServico.add(pizza.calculaPrecoPrato()));
+			this.listaPizza.forEach(pizza -> this.valorTotalServico = this.valorTotalServico.add(pizza.getItem().getTotalItem()));
 		}
 		if (!(this.listaSalgadinho.isEmpty())) {
-			this.listaSalgadinho.forEach(salgadinho -> this.valorTotalServico.add(salgadinho.calculaPrecoPrato()));
+			this.listaSalgadinho.forEach(salgadinho -> this.valorTotalServico.add(salgadinho.getItem().getTotalItem()));
 		}
 		System.out.println(this.valorTotalServico);
-		return this.valorTotalServico;
 	}
 	
-	public BigDecimal calcularTroco(BigDecimal valorPago) {
+	public BigDecimal calcularTroco(BigDecimal valorPago) throws Exception {
 		if (valorPago.compareTo(this.valorTotalServico) == 1) {
-			System.out.println("O valor pago R$: " + valorPago + " é menor que o total do serviço R$: " + this.valorTotalServico);
 			this.troco = BigDecimal.ZERO;
+			throw new Exception("O valor pago R$: " + valorPago + " é menor que o total do serviço R$: " + this.valorTotalServico);
 		} else if (valorPago.compareTo(this.valorTotalServico) == 0) {
 			this.troco = BigDecimal.ZERO;
+			this.statusPedido = StatusPedido.PAGOFINALIZADO;
 		} else if (valorPago.compareTo(this.valorTotalServico) == -1) {
 			this.troco = valorPago.subtract(this.valorTotalServico);
+			this.statusPedido = StatusPedido.PAGOFINALIZADO;
 		}
 		System.out.println(troco);
 		return this.troco;

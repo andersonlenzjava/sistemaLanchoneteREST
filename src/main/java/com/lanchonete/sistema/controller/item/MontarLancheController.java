@@ -33,7 +33,7 @@ public class MontarLancheController {
 	@GetMapping
 	public Page<MontarLancheDto> listarLanches(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10)
 	Pageable paginacao) {
-		return montarLancheService.listarLanches();
+		return montarLancheService.listarLanches(paginacao);
 	}
 	
 	@GetMapping("/{id}") //AQUI JÁ TRAZ TODAS AS INFO DO ITEM TAMBÉM 
@@ -50,9 +50,8 @@ public class MontarLancheController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<MontarLancheDto> atualizarLanche(@RequestBody @Valid MontarLancheForm montarLancheForm,
-			UriComponentsBuilder uriBuilder) {
-		return montarLancheService.atualizarLanche(montarLancheForm, uriBuilder);
+	public ResponseEntity<MontarLancheDto> atualizarLanche(@PathVariable Long id, @RequestBody @Valid MontarLancheForm montarLancheForm) {
+		return montarLancheService.atualizarLanche(id, montarLancheForm);
 	}
 	
 	@DeleteMapping("/{id}")

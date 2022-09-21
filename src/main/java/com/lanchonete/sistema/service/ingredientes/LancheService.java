@@ -130,7 +130,7 @@ public class LancheService {
 				Optional<LancheRecheio> lancheRecheioOptional = lancheRecheioRepository.findByTipoRecheioIgnoreCase(lancheRecheio.getTipoRecheio());
 				if (lancheRecheioOptional.isEmpty()) {
 					lancheRecheioRepository.save(lancheRecheio);
-					URI uri = uriBuilder.path("/agencias/{id}").buildAndExpand(lancheRecheio.getId()).toUri();
+					URI uri = uriBuilder.path("/lanches/{id}").buildAndExpand(lancheRecheio.getId()).toUri();
 					return ResponseEntity.created(uri).body(new LancheRecheioDto(lancheRecheio));
 				} else {
 					throw new ItemJaExisteException("Recheio já existe");

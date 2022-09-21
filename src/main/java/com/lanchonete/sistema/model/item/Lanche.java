@@ -35,16 +35,18 @@ public class Lanche implements CalculoPrato {
 
 	@Override
 	public BigDecimal calculaPrecoPrato() {
-		return lancheTipoPao.getIngrediente().getPrecoVenda()
+		return item.setTotalItem(
+				lancheTipoPao.getIngrediente().getPrecoVenda()
 				.add(lancheRecheio.getIngrediente().getPrecoVenda()
-						.add(lancheMolho.getIngrediente().getPrecoVenda()));
+				.add(lancheMolho.getIngrediente().getPrecoVenda())));
 	}
 
 	@Override
 	public double calculaPesoPrato() {
-		return lancheTipoPao.getIngrediente().getPeso() +
-			   lancheRecheio.getIngrediente().getPeso() +
-			   lancheMolho.getIngrediente().getPeso();
+		return item.setPesoPrato(
+				lancheTipoPao.getIngrediente().getPeso() +
+				lancheRecheio.getIngrediente().getPeso() +
+				lancheMolho.getIngrediente().getPeso()) ;
 	}
 
 	public Item getItem() {

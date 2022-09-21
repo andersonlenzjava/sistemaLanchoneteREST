@@ -2,10 +2,9 @@ package com.lanchonete.sistema.service.item;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,6 +15,7 @@ import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
 import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 import com.lanchonete.sistema.model.item.Lanche;
 import com.lanchonete.sistema.model.pedido.Pedido;
+import com.lanchonete.sistema.model.pedido.StatusPedido;
 import com.lanchonete.sistema.repository.ingredientes.LancheMolhoRepository;
 import com.lanchonete.sistema.repository.ingredientes.LancheRecheioRepository;
 import com.lanchonete.sistema.repository.ingredientes.LancheTipoPaoRepository;
@@ -24,81 +24,117 @@ import com.lanchonete.sistema.repository.pedido.pedidoRepository;
 
 public class MontarLancheService {
 
-	
 	@Autowired
 	pedidoRepository pedidoRepository;
-	
-	@Autowired
-	LancheMolhoRepository lancheMolhoRepository;
-	
-	@Autowired
-	LancheRecheioRepository lancheRecheioRepository;
-	
-	@Autowired
-	LancheTipoPaoRepository lancheTipoPaoRepository;
-	
+
 	@Autowired
 	LancheRepository lancheRepository;
-	
-	//Get id
-	public Page<MontarLancheDto> listarLanches() {
-		// buscarTodos
-		return null;
+
+	@Autowired
+	LancheMolhoRepository lancheMolhoRepository;
+
+	@Autowired
+	LancheRecheioRepository lancheRecheioRepository;
+
+	@Autowired
+	LancheTipoPaoRepository lancheTipoPaoRepository;
+
+	// Get todos
+	public Page<MontarLancheDto> listarLanches(Pageable paginacao) {
+		Page<Lanche> lanches = lancheRepository.findAll(paginacao);
+		return MontarLancheDto.converter(lanches);
 	}
 
+	// Get por id 
 	public ResponseEntity<MontarLancheDto> listarLanchePorId(Long id) {
-		// buscar por id 
-		return null;
+		Optional<Lanche> lancheOptional = lancheRepository.findById(id);
+		if (lancheOptional.isPresent()) {
+			return ResponseEntity.ok(MontarLancheDto.converterUmLanche(lancheOptional.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
-	
-	//put
+
+	// post
 	public ResponseEntity<MontarLancheDto> cadastrarLanche(MontarLancheForm montarLancheForm,
 			UriComponentsBuilder uriBuilder) {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarLancheForm.getPedidoId());
 		if (pedidoOptional.isPresent()) {
-			Optional<LancheMolho> lancheMolhoOptional = lancheMolhoRepository.findById(montarLancheForm.getPedidoId());
-			Optional<LancheRecheio> lancheRecheioOptional = lancheRecheioRepository.findById(montarLancheForm.getPedidoId());
-			Optional<LancheTipoPao> lancheTipoPaoOptional = lancheTipoPaoRepository.findById(montarLancheForm.getPedidoId());
-			
-			if(lancheMolhoOptional.isPresent() && lancheRecheioOptional.isPresent() && lancheTipoPaoOptional.isPresent()) {
-				LancheMolho lancheMolho = lancheMolhoOptional.get();
-				LancheRecheio lancheRecheio = lancheRecheioOptional.get();
-				LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
-				
-				Lanche lanche = new Lanche(lancheTipoPao, lancheRecheio, lancheMolho);
-				lancheRepository.save(lanche);
-				lanche.getId();
-				
-				Pedido pedido = pedidoOptional.get();
-				pedido.adicionaLanche(lanche);
-				
+			Pedido pedido = pedidoOptional.get();
+
+			if (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
+
+				Optional<LancheMolho> lancheMolhoOptional = lancheMolhoRepository.findById(montarLancheForm.getLancheMolhoId());
+				Optional<LancheRecheio> lancheRecheioOptional = lancheRecheioRepository.findById(montarLancheForm.getLancheRecheioId());
+				Optional<LancheTipoPao> lancheTipoPaoOptional = lancheTipoPaoRepository.findById(montarLancheForm.getLancheTipoPaoId());
+
+				if (lancheMolhoOptional.isPresent() && lancheRecheioOptional.isPresent()
+						&& lancheTipoPaoOptional.isPresent()) {
+					LancheMolho lancheMolho = lancheMolhoOptional.get();
+					LancheRecheio lancheRecheio = lancheRecheioOptional.get();
+					LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
+
+					Lanche lanche = new Lanche(lancheTipoPao, lancheRecheio, lancheMolho); // aqui já gera o ID ?
+					lancheRepository.save(lanche); // ou somente aqui o lanche passa a ter ID ?
+
+					pedido.adicionaLanche(lanche);
+
+					pedidoRepository.save(pedido);
+
+					return ResponseEntity.ok(new MontarLancheDto(lanche));
+				}
 			}
 		}
-		//1° verificar se o pedido existe
-		//2° verificar se o tipo de pao existe 
-		//3° verificar se o tipo de recheio existe
-		//4° verificar se o tipo de molho existe
-		
-		//5° salvar o lanche 
-		
-		//6° adicionar o lanche a lista do pedido. 
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity<MontarLancheDto> atualizarLanche(@Valid MontarLancheForm montarLancheForm,
-			UriComponentsBuilder uriBuilder) {
-		//buscar o item por id 
-		//realizar o procedimento do método cadastrar 
-		return null;
+	// put
+	public ResponseEntity<MontarLancheDto> atualizarLanche(Long id, MontarLancheForm montarLancheForm) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarLancheForm.getPedidoId());
+		if (pedidoOptional.isPresent()) {
+			Pedido pedido = pedidoOptional.get();
+			
+			if (((pedido.getListaLanche().get(Math.toIntExact(id))) != null)
+					&& (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO)) {
+
+				Optional<LancheMolho> lancheMolhoOptional = lancheMolhoRepository.findById(montarLancheForm.getLancheMolhoId());
+				Optional<LancheRecheio> lancheRecheioOptional = lancheRecheioRepository.findById(montarLancheForm.getLancheRecheioId());
+				Optional<LancheTipoPao> lancheTipoPaoOptional = lancheTipoPaoRepository.findById(montarLancheForm.getLancheTipoPaoId());
+
+				if (lancheMolhoOptional.isPresent() && lancheRecheioOptional.isPresent()
+						&& lancheTipoPaoOptional.isPresent()) {
+
+					LancheMolho lancheMolho = lancheMolhoOptional.get();
+					LancheRecheio lancheRecheio = lancheRecheioOptional.get();
+					LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
+
+					Lanche lanche = pedido.getListaLanche().get(Math.toIntExact(id));
+
+					lanche.setLancheMolho(lancheMolho);
+					lanche.setLancheRecheio(lancheRecheio);
+					lanche.setLancheTipoPao(lancheTipoPao);
+
+					lancheRepository.save(lanche);
+
+					// buscar lanche dentro da lista de pedidos
+					pedido.getListaLanche().set(Math.toIntExact(lanche.getId()), lanche);
+
+					pedidoRepository.save(pedido);
+
+					return ResponseEntity.ok(new MontarLancheDto(lanche));
+				}
+			}
+		}
+		return ResponseEntity.notFound().build();
 	}
 
+	// delete
 	public ResponseEntity<?> removerLanche(Long id) {
-		// //buscar o item por id 
-		//deletalo 
-		return null;
+		Optional<Lanche> lancheOptional = lancheRepository.findById(id);
+		if (lancheOptional.isPresent()) {
+			lancheRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
-
-
-	
 }
