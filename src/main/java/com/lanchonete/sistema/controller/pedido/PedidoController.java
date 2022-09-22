@@ -66,11 +66,9 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/calculaTroco/{id}")
-	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(@RequestParam(required = false) BigDecimal valorPago, @PathVariable Long id) throws Exception {
-		return pedidoService.retornaCalculoTrocoPedido(valorPago, id);
+	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(@PathVariable Long id, @RequestParam(required = true) BigDecimal valorPago) throws Exception {
+		return pedidoService.retornaCalculoTrocoPedido(id, valorPago);
 	} // estado pago se aprovar 
-	
-	//função de excluir itens da lista 
 	
 	
 	@PostMapping
@@ -87,10 +85,32 @@ public class PedidoController {
 		return pedidoService.atualizarPedido(pedidoForm, uriBuilder);
 	}
 	
+	//deletar um pedido 
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> removerPedido(@PathVariable Long id) {
 		return pedidoService.removerPedido(id);
 	}
+	
+	//deletar um lanche
+	@DeleteMapping("/removerLanchePedido")
+	@Transactional
+	public ResponseEntity<?> removerLanche(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long lancheId) {
+		return pedidoService.removerLanche(pedidoId, lancheId);
+	}
+	
+	//deletar uma pizza
+	@DeleteMapping("/removerPizzaPedido")
+	@Transactional
+	public ResponseEntity<?> removerPizza(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long pizzaId) {
+		return pedidoService.removerPizza(pedidoId, pizzaId);
+	}
+		
+	//deletar um salgadinho
+	@DeleteMapping("/removerSalgadinhoPedido")
+	@Transactional
+	public ResponseEntity<?> removerSalgadinho(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long salgadinhoId) {
+		return pedidoService.removerSalgadinho(pedidoId, salgadinhoId);
+	}	
 	
 }

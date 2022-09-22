@@ -22,11 +22,11 @@ public class SalgadinhoMassaDto {
 		this.peso = salgadinhoMassa.getIngrediente().getPeso();
 	}
 
-	public String getTipoMolho() {
+	public String getTipoMassa() {
 		return tipoMassa;
 	}
-	public void setTipoMolho(String tipoMolho) {
-		this.tipoMassa = tipoMolho;
+	public void setTipoMassa(String tipoMassa) {
+		this.tipoMassa = tipoMassa;
 	}
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;

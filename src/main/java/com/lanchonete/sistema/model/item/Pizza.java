@@ -1,7 +1,5 @@
 package com.lanchonete.sistema.model.item;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import com.lanchonete.sistema.model.ingrediente.PizzaMolho;
 import com.lanchonete.sistema.model.ingrediente.PizzaRecheio;
 
 @Entity
-public class Pizza implements CalculoPrato  {
+public class Pizza {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,22 +29,24 @@ public class Pizza implements CalculoPrato  {
 		this.pizzaBorda = pizzaBorda;
 		this.pizzaMolho = pizzaMolho;
 		this.pizzaRecheio = pizzaRecheio;
+		this.item = new Item();
+		
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
+	}
+	
+	public Pizza() {
 	}
 
-	@Override
-	public BigDecimal calculaPrecoPrato() {
-		return pizzaBorda.getIngrediente().getPrecoVenda()
+	public void calculoPrecoPesoPrato() {
+		this.item.setTotalItem(pizzaBorda.getIngrediente().getPrecoVenda()
 				.add(pizzaMolho.getIngrediente().getPrecoVenda()
-						.add(pizzaRecheio.getIngrediente().getPrecoVenda()));
+						.add(pizzaRecheio.getIngrediente().getPrecoVenda()))); 
+		
+		this.item.setPesoPrato(pizzaBorda.getIngrediente().getPeso() +
+				   pizzaMolho.getIngrediente().getPeso() +
+				   pizzaRecheio.getIngrediente().getPeso()); 
 	}
-
-	@Override
-	public double calculaPesoPrato() {
-		return pizzaBorda.getIngrediente().getPeso() +
-			   pizzaMolho.getIngrediente().getPeso() +
-			   pizzaRecheio.getIngrediente().getPeso();
-	}
-
+	
 	public Item getItem() {
 		return item;
 	}
@@ -58,18 +58,21 @@ public class Pizza implements CalculoPrato  {
 	}
 	public void setPizzaBorda(PizzaBorda pizzaBorda) {
 		this.pizzaBorda = pizzaBorda;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public PizzaMolho getPizzaMolho() {
 		return pizzaMolho;
 	}
 	public void setPizzaMolho(PizzaMolho pizzaMolho) {
 		this.pizzaMolho = pizzaMolho;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public PizzaRecheio getPizzaRecheio() {
 		return pizzaRecheio;
 	}
 	public void setPizzaRecheio(PizzaRecheio pizzaRecheio) {
 		this.pizzaRecheio = pizzaRecheio;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public Long getId() {
 		return id;

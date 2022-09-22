@@ -18,12 +18,11 @@ public class MontarLancheDto {
 	
 	public MontarLancheDto(Lanche lanche) {
 		this.id = lanche.getId();
-		lanche.calculaPesoPrato();
-		lanche.calculaPrecoPrato();
 		this.item = lanche.getItem();
 		this.lancheTipoPao = lanche.getLancheTipoPao();
 		this.lancheRecheio = lanche.getLancheRecheio();
 		this.lancheMolho = lanche.getLancheMolho();
+		
 	}
 
 	public Long getId() {

@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 public class Item {
 
 	private BigDecimal totalItem = BigDecimal.ZERO;
-	private LocalDate dataValidade;
+	private LocalDate dataValidade = LocalDate.now();
 	private double pesoItem;
 	
 	public BigDecimal getTotalItem() {

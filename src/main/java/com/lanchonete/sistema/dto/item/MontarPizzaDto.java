@@ -18,8 +18,6 @@ public class MontarPizzaDto {
 	
 	public MontarPizzaDto(Pizza pizza) {
 		this.id = pizza.getId();
-		pizza.calculaPesoPrato();
-		pizza.calculaPrecoPrato();
 		this.item = pizza.getItem();
 		this.pizzaBorda = pizza.getPizzaBorda();
 		this.pizzaMolho = pizza.getPizzaMolho();
@@ -60,7 +58,7 @@ public class MontarPizzaDto {
 	public static Page<MontarPizzaDto> converter(Page<Pizza> pizzas) {
 		return pizzas.map(MontarPizzaDto::new);
 	}
-	public static MontarPizzaDto converterUmSalgadinho(Pizza pizza) {
+	public static MontarPizzaDto converterUmaPizza(Pizza pizza) {
 		return new MontarPizzaDto(pizza);
 	}
 	

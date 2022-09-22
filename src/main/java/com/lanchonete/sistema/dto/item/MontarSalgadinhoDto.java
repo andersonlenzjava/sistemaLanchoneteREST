@@ -18,8 +18,6 @@ public class MontarSalgadinhoDto {
 	
 	public MontarSalgadinhoDto (Salgadinho salgadinho) {
 		this.id = salgadinho.getId();
-		salgadinho.calculaPesoPrato();
-		salgadinho.calculaPrecoPrato();
 		this.item = salgadinho.getItem();
 		this.salgadinhoMassa = salgadinho.getSalgadinhoMassa();
 		this.salgadinhoRecheio = salgadinho.getSalgadinhoRecheio();

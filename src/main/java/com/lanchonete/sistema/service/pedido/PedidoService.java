@@ -50,7 +50,7 @@ public class PedidoService {
 	public ResponseEntity<PedidoDto> cadastrarPedido(PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
 		Pedido pedido = pedidoForm.converter();
 		pedidoRepository.save(pedido);
-		URI uri = uriBuilder.path("/lanches/{id}").buildAndExpand(pedido.getId()).toUri();
+		URI uri = uriBuilder.path("/pedido/{id}").buildAndExpand(pedido.getId()).toUri();
 		return ResponseEntity.created(uri).body(new PedidoDto(pedido));
 	}
 
@@ -58,6 +58,7 @@ public class PedidoService {
 	public ResponseEntity<PedidoDto> atualizarPedido(PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoForm.getId());
 		if (pedidoOptional.isPresent()) {
+			
 			Pedido pedido = pedidoOptional.get();
 			if (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
 
@@ -122,17 +123,59 @@ public class PedidoService {
 		}
 	}
 
-	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(BigDecimal valorPago, Long id) throws Exception {
+	// retorna o troco no corpo da mensagem 
+	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(Long id, BigDecimal valorPago) throws Exception {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
+			pedido.calculaTaxaServico();
 			return ResponseEntity.ok(pedido.calcularTroco(valorPago));
 		}
 		return ResponseEntity.notFound().build();
 	}
 
-	//retorna troco 
-	
-	// CALCULAR OS TOTAIS, E TROCO 
+	// deleta um lanche da lista 
+	public ResponseEntity<?> removerLanche(Long pedidoId, Long lancheId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+		if (pedidoOptional.isPresent()) {
+			Pedido pedido = pedidoOptional.get();
+			
+			if (pedido.getListaLanche().get(Math.toIntExact(lancheId)) != null) {
+				pedido.getListaLanche().remove(Math.toIntExact(lancheId));
+				return ResponseEntity.ok().build();
+			}
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	//delete uma pizza da lista 
+	public ResponseEntity<?> removerPizza(Long pedidoId, Long pizzaId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+		if (pedidoOptional.isPresent()) {
+			Pedido pedido = pedidoOptional.get();
+			
+			if (pedido.getListaPizza().get(Math.toIntExact(pizzaId)) != null) {
+				pedido.getListaPizza().remove(Math.toIntExact(pizzaId));
+				return ResponseEntity.ok().build();
+			}
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	//delete um salgadinho da lista 
+	public ResponseEntity<?> removerSalgadinho(Long pedidoId, Long salgadinhoId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+		if (pedidoOptional.isPresent()) {
+			Pedido pedido = pedidoOptional.get();
+			
+			if (pedido.getListaSalgadinho().get(Math.toIntExact(salgadinhoId)) != null) {
+				pedido.getListaSalgadinho().remove(Math.toIntExact(salgadinhoId));
+				return ResponseEntity.ok().build();
+			}
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+
 
 }

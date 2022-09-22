@@ -1,7 +1,5 @@
 package com.lanchonete.sistema.model.item;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import com.lanchonete.sistema.model.ingrediente.SalgadinhoRecheio;
 import com.lanchonete.sistema.model.ingrediente.SalgadinhoTipoPreparo;
 
 @Entity
-public class Salgadinho implements CalculoPrato  {
+public class Salgadinho  {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,22 +30,24 @@ public class Salgadinho implements CalculoPrato  {
 		this.salgadinhoMassa = salgadinhoMassa;
 		this.salgadinhoRecheio = salgadinhoRecheio;
 		this.salgadinhoTipoPreparo = salgadinhoTipoPreparo;
+		this.item = new Item();
+		
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 
-	@Override
-	public BigDecimal calculaPrecoPrato() {
-		return salgadinhoMassa.getIngrediente().getPrecoVenda()
+	public Salgadinho() {
+	}
+	
+	public void calculoPrecoPesoPrato() {
+		this.item.setTotalItem(salgadinhoMassa.getIngrediente().getPrecoVenda()
 				.add(salgadinhoRecheio.getIngrediente().getPrecoVenda()
-						.add(salgadinhoTipoPreparo.getIngrediente().getPrecoVenda()));
+						.add(salgadinhoTipoPreparo.getIngrediente().getPrecoVenda())));
+		
+		this.item.setPesoPrato(salgadinhoMassa.getIngrediente().getPeso() +
+				   salgadinhoRecheio.getIngrediente().getPeso() +
+				   salgadinhoTipoPreparo.getIngrediente().getPeso()); 
 	}
-
-	@Override
-	public double calculaPesoPrato() {
-		return salgadinhoMassa.getIngrediente().getPeso() +
-			   salgadinhoRecheio.getIngrediente().getPeso() +
-			   salgadinhoTipoPreparo.getIngrediente().getPeso();
-	}
-
+	
 	public Item getItem() {
 		return item;
 	}
@@ -59,18 +59,21 @@ public class Salgadinho implements CalculoPrato  {
 	}
 	public void setSalgadinhoMassa(SalgadinhoMassa salgadinhoMassa) {
 		this.salgadinhoMassa = salgadinhoMassa;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public SalgadinhoRecheio getSalgadinhoRecheio() {
 		return salgadinhoRecheio;
 	}
 	public void setSalgadinhoRecheio(SalgadinhoRecheio salgadinhoRecheio) {
 		this.salgadinhoRecheio = salgadinhoRecheio;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public SalgadinhoTipoPreparo getSalgadinhoTipoPreparo() {
 		return salgadinhoTipoPreparo;
 	}
 	public void setSalgadinhoTipoPreparo(SalgadinhoTipoPreparo salgadinhoTipoPreparo) {
 		this.salgadinhoTipoPreparo = salgadinhoTipoPreparo;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public Long getId() {
 		return id;

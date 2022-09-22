@@ -1,11 +1,13 @@
 package com.lanchonete.sistema.service.item;
 
+import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.lanchonete.sistema.dto.item.MontarLancheDto;
@@ -22,6 +24,7 @@ import com.lanchonete.sistema.repository.ingredientes.LancheTipoPaoRepository;
 import com.lanchonete.sistema.repository.item.LancheRepository;
 import com.lanchonete.sistema.repository.pedido.pedidoRepository;
 
+@Service
 public class MontarLancheService {
 
 	@Autowired
@@ -60,6 +63,8 @@ public class MontarLancheService {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarLancheForm.getPedidoId());
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
+			
+			System.out.println("teste 123");
 
 			if (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
 
@@ -69,18 +74,23 @@ public class MontarLancheService {
 
 				if (lancheMolhoOptional.isPresent() && lancheRecheioOptional.isPresent()
 						&& lancheTipoPaoOptional.isPresent()) {
+					
+					System.out.println("teste 456");
+					
 					LancheMolho lancheMolho = lancheMolhoOptional.get();
 					LancheRecheio lancheRecheio = lancheRecheioOptional.get();
 					LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
 
-					Lanche lanche = new Lanche(lancheTipoPao, lancheRecheio, lancheMolho); // aqui já gera o ID ?
-					lancheRepository.save(lanche); // ou somente aqui o lanche passa a ter ID ?
+					Lanche lanche = new Lanche(lancheTipoPao, lancheRecheio, lancheMolho);
+					lancheRepository.save(lanche); // aqui o lanche passa a ter ID 
 
 					pedido.adicionaLanche(lanche);
 
 					pedidoRepository.save(pedido);
-
-					return ResponseEntity.ok(new MontarLancheDto(lanche));
+					
+					System.out.println("teste 789");
+					URI uri = uriBuilder.path("/montarLanche/{id}").buildAndExpand(lanche.getId()).toUri();
+					return ResponseEntity.created(uri).body(new MontarLancheDto(lanche));
 				}
 			}
 		}
@@ -115,7 +125,7 @@ public class MontarLancheService {
 
 					lancheRepository.save(lanche);
 
-					// buscar lanche dentro da lista de pedidos
+					// buscar lanche dentro da lista de pedidos e seta 
 					pedido.getListaLanche().set(Math.toIntExact(lanche.getId()), lanche);
 
 					pedidoRepository.save(pedido);

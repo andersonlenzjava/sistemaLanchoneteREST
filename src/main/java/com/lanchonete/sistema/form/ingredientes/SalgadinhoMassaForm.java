@@ -30,8 +30,8 @@ public class SalgadinhoMassaForm {
     @Digits(integer=4, fraction=2)
 	double peso;
 	
-	public void setTipoMolho(String tipoMolho) {
-		this.tipoMassa = tipoMolho;
+	public void setTipoMassa(String tipoMassa) {
+		this.tipoMassa = tipoMassa;
 	}
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;

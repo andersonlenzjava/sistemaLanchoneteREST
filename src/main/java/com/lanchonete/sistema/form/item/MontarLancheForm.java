@@ -1,28 +1,23 @@
 package com.lanchonete.sistema.form.item;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class MontarLancheForm {
 
 	@NotNull
-	@NotEmpty
 	@Min(value = 0)
 	Long pedidoId;
 	
 	@NotNull
-	@NotEmpty
 	@Min(value = 0)
 	Long lancheTipoPaoId;
 	
 	@NotNull
-	@NotEmpty
 	@Min(value = 0)
 	Long lancheRecheioId;
 	
 	@NotNull
-	@NotEmpty
 	@Min(value = 0)
 	Long lancheMolhoId;
 

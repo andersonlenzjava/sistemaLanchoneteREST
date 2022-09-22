@@ -1,7 +1,5 @@
 package com.lanchonete.sistema.model.item;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
 import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 
 @Entity
-public class Lanche implements CalculoPrato {
+public class Lanche {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,19 +29,22 @@ public class Lanche implements CalculoPrato {
 		this.lancheTipoPao = lancheTipoPao;
 		this.lancheRecheio = lancheRecheio;
 		this.lancheMolho = lancheMolho;
+		this.item = new Item();
+		
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
+
+	}
+	
+	public Lanche() {
 	}
 
-	@Override
-	public BigDecimal calculaPrecoPrato() {
-		return item.setTotalItem(
+	public void calculoPrecoPesoPrato() {
+		this.item.setTotalItem(
 				lancheTipoPao.getIngrediente().getPrecoVenda()
 				.add(lancheRecheio.getIngrediente().getPrecoVenda()
 				.add(lancheMolho.getIngrediente().getPrecoVenda())));
-	}
-
-	@Override
-	public double calculaPesoPrato() {
-		return item.setPesoPrato(
+		
+		this.item.setPesoPrato(
 				lancheTipoPao.getIngrediente().getPeso() +
 				lancheRecheio.getIngrediente().getPeso() +
 				lancheMolho.getIngrediente().getPeso()) ;
@@ -60,18 +61,21 @@ public class Lanche implements CalculoPrato {
 	}
 	public void setLancheTipoPao(LancheTipoPao lancheTipoPao) {
 		this.lancheTipoPao = lancheTipoPao;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public LancheRecheio getLancheRecheio() {
 		return lancheRecheio;
 	}
 	public void setLancheRecheio(LancheRecheio lancheRecheio) {
 		this.lancheRecheio = lancheRecheio;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public LancheMolho getLancheMolho() {
 		return lancheMolho;
 	}
 	public void setLancheMolho(LancheMolho lancheMolho) {
 		this.lancheMolho = lancheMolho;
+		this.calculoPrecoPesoPrato();// se refere a esta classe 
 	}
 	public Long getId() {
 		return id;

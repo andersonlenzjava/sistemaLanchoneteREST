@@ -22,11 +22,11 @@ public class SalgadinhoRecheioDto {
 		this.peso = salgadinhoRecheio.getIngrediente().getPeso();
 	}
 
-	public String getTipoMolho() {
+	public String getTipoRecheio() {
 		return tipoRecheio;
 	}
-	public void setTipoMolho(String tipoMolho) {
-		this.tipoRecheio = tipoMolho;
+	public void setTipoRecheio(String tipoRecheio) {
+		this.tipoRecheio = tipoRecheio;
 	}
 	public BigDecimal getPrecoVenda() {
 		return precoVenda;
