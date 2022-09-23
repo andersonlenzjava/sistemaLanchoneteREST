@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import com.lanchonete.sistema.model.ingrediente.LancheMolho;
 import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
 import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
+import com.lanchonete.sistema.model.pedido.Pedido;
 
 @Entity
 public class Lanche {
@@ -19,27 +20,22 @@ public class Lanche {
 	@Embedded
 	private Item item;
 	@ManyToOne
+	Pedido pedido;
+	@ManyToOne
 	private LancheTipoPao lancheTipoPao;
 	@ManyToOne
 	private LancheRecheio lancheRecheio;
 	@ManyToOne
 	private LancheMolho lancheMolho;
 
-	public Lanche(LancheTipoPao lancheTipoPao, LancheRecheio lancheRecheio, LancheMolho lancheMolho) {
+	public Lanche(Pedido pedido, LancheTipoPao lancheTipoPao, LancheRecheio lancheRecheio, LancheMolho lancheMolho) {
+		this.pedido = pedido;
 		this.lancheTipoPao = lancheTipoPao;
 		this.lancheRecheio = lancheRecheio;
 		this.lancheMolho = lancheMolho;
 		this.item = new Item();
 		
-		this.calculoPrecoPesoPrato();// se refere a esta classe 
-
-	}
-	
-	public Lanche() {
-	}
-
-	public void calculoPrecoPesoPrato() {
-		this.item.setTotalItem(
+		this.item.setTotalItem(   // se refere a esta classe 
 				lancheTipoPao.getIngrediente().getPrecoVenda()
 				.add(lancheRecheio.getIngrediente().getPrecoVenda()
 				.add(lancheMolho.getIngrediente().getPrecoVenda())));
@@ -49,38 +45,45 @@ public class Lanche {
 				lancheRecheio.getIngrediente().getPeso() +
 				lancheMolho.getIngrediente().getPeso()) ;
 	}
-
-	public Item getItem() {
-		return item;
+	
+	public Lanche() {
 	}
-	public void setItem(Item item) {
-		this.item = item;
-	}
-	public LancheTipoPao getLancheTipoPao() {
-		return lancheTipoPao;
-	}
-	public void setLancheTipoPao(LancheTipoPao lancheTipoPao) {
-		this.lancheTipoPao = lancheTipoPao;
-		this.calculoPrecoPesoPrato();// se refere a esta classe 
-	}
-	public LancheRecheio getLancheRecheio() {
-		return lancheRecheio;
-	}
-	public void setLancheRecheio(LancheRecheio lancheRecheio) {
-		this.lancheRecheio = lancheRecheio;
-		this.calculoPrecoPesoPrato();// se refere a esta classe 
-	}
-	public LancheMolho getLancheMolho() {
-		return lancheMolho;
-	}
-	public void setLancheMolho(LancheMolho lancheMolho) {
-		this.lancheMolho = lancheMolho;
-		this.calculoPrecoPesoPrato();// se refere a esta classe 
-	}
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public Item getItem() {
+		return item;
+	}
+	public void setItem(Item item) {
+		this.item = item;
+	}
+	public Pedido getPedido() {
+		return pedido;
+	}
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+	public LancheTipoPao getLancheTipoPao() {
+		return lancheTipoPao;
+	}
+	public void setLancheTipoPao(LancheTipoPao lancheTipoPao) {
+		this.lancheTipoPao = lancheTipoPao;
+	}
+	public LancheRecheio getLancheRecheio() {
+		return lancheRecheio;
+	}
+	public void setLancheRecheio(LancheRecheio lancheRecheio) {
+		this.lancheRecheio = lancheRecheio;
+	}
+	public LancheMolho getLancheMolho() {
+		return lancheMolho;
+	}
+	public void setLancheMolho(LancheMolho lancheMolho) {
+		this.lancheMolho = lancheMolho;
+	}
+
 }

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ import com.lanchonete.sistema.form.item.MontarPizzaForm;
 import com.lanchonete.sistema.service.item.MontarPizzaService;
 
 @RestController
-@RequestMapping("/montarPizza")
+@RequestMapping("/pedido/pizzas")
 public class MontarPizzaController {
 	
 	@Autowired
@@ -54,11 +53,4 @@ public class MontarPizzaController {
 		return montarPizzaService.atualizarPizza(id, montarPizzaForm);
 	}
 	
-	@DeleteMapping("/{id}")
-	@Transactional
-	public ResponseEntity<?> removerPizza(@PathVariable Long id) {
-		return montarPizzaService.removerPizza(id);
-	}
-	
-
 }

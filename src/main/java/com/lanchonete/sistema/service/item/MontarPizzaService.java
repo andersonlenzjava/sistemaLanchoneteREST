@@ -78,7 +78,6 @@ public class MontarPizzaService {
 					PizzaRecheio pizzaRecheio = pizzaRecheioOptional.get();
 
 					Pizza pizza = new Pizza(pizzaBorda, pizzaMolho, pizzaRecheio);
-					
 					pizzaRepository.save(pizza); // aqui o lanche passa a ter ID 
 
 					pedido.adicionaPizza(pizza);
@@ -113,31 +112,23 @@ public class MontarPizzaService {
 					PizzaMolho pizzaMolho = pizzaMolhoOptional.get();
 					PizzaRecheio pizzaRecheio = pizzaRecheioOptional.get();
 					
-					Pizza pizza = pedido.getListaPizza().get(Math.toIntExact(id));
+					Pizza pizza = pedido.atualizarPizza(id, pizzaBorda, pizzaMolho, pizzaRecheio);
 					
-					pizza.setPizzaBorda(pizzaBorda);
-					pizza.setPizzaMolho(pizzaMolho);
-					pizza.setPizzaRecheio(pizzaRecheio);
+//					Pizza pizza = pedido.getListaPizza().get(Math.toIntExact(id));
+//					
+//					pizza.setPizzaBorda(pizzaBorda);
+//					pizza.setPizzaMolho(pizzaMolho);
+//					pizza.setPizzaRecheio(pizzaRecheio);
 					
 					pizzaRepository.save(pizza);
 					
-					pedido.getListaPizza().set(Math.toIntExact(pizza.getId()), pizza);
+//					pedido.getListaPizza().set(Math.toIntExact(pizza.getId()), pizza);
 
 					pedidoRepository.save(pedido);
 
 					return ResponseEntity.ok(new MontarPizzaDto(pizza));
 				}
 			}
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	//delete
-	public ResponseEntity<?> removerPizza(Long id) {
-		Optional<Pizza> pizzaOptional = pizzaRepository.findById(id);
-		if (pizzaOptional.isPresent()) {
-			pizzaRepository.deleteById(id);
-			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}

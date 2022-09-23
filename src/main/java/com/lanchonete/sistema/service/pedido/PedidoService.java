@@ -23,6 +23,9 @@ import com.lanchonete.sistema.model.item.Pizza;
 import com.lanchonete.sistema.model.item.Salgadinho;
 import com.lanchonete.sistema.model.pedido.Pedido;
 import com.lanchonete.sistema.model.pedido.StatusPedido;
+import com.lanchonete.sistema.repository.item.LancheRepository;
+import com.lanchonete.sistema.repository.item.PizzaRepository;
+import com.lanchonete.sistema.repository.item.SalgadinhoRepository;
 import com.lanchonete.sistema.repository.pedido.pedidoRepository;
 
 @Service
@@ -30,6 +33,15 @@ public class PedidoService {
 
 	@Autowired
 	private pedidoRepository pedidoRepository;
+	
+	@Autowired
+	LancheRepository lancheRepository;
+	
+	@Autowired
+	PizzaRepository pizzaRepository;
+	
+	@Autowired
+	SalgadinhoRepository salgadinhoRepository;
 
 	// get pedidos
 	public Page<PedidoDto> listarPedidos(Pageable paginacao) {
@@ -55,8 +67,8 @@ public class PedidoService {
 	}
 
 	// atualizar pedido
-	public ResponseEntity<PedidoDto> atualizarPedido(PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoForm.getId());
+	public ResponseEntity<PedidoDto> atualizarPedido(Long id, PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
 		if (pedidoOptional.isPresent()) {
 			
 			Pedido pedido = pedidoOptional.get();
@@ -128,7 +140,6 @@ public class PedidoService {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
-			pedido.calculaTaxaServico();
 			return ResponseEntity.ok(pedido.calcularTroco(valorPago));
 		}
 		return ResponseEntity.notFound().build();
@@ -141,7 +152,11 @@ public class PedidoService {
 			Pedido pedido = pedidoOptional.get();
 			
 			if (pedido.getListaLanche().get(Math.toIntExact(lancheId)) != null) {
-				pedido.getListaLanche().remove(Math.toIntExact(lancheId));
+				pedido.removerLanche(Math.toIntExact(lancheId));
+				
+				Optional<Lanche> lancheOptional = lancheRepository.findById(lancheId);
+				lancheRepository.delete(lancheOptional.get());
+
 				return ResponseEntity.ok().build();
 			}
 		}
@@ -155,7 +170,11 @@ public class PedidoService {
 			Pedido pedido = pedidoOptional.get();
 			
 			if (pedido.getListaPizza().get(Math.toIntExact(pizzaId)) != null) {
-				pedido.getListaPizza().remove(Math.toIntExact(pizzaId));
+				pedido.removerPizza(Math.toIntExact(pizzaId));
+				
+				Optional<Pizza> pizzaOptional = pizzaRepository.findById(pizzaId);
+				pizzaRepository.delete(pizzaOptional.get());
+
 				return ResponseEntity.ok().build();
 			}
 		}
@@ -168,14 +187,22 @@ public class PedidoService {
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
 			
+			// id na lista de salgadinhos
 			if (pedido.getListaSalgadinho().get(Math.toIntExact(salgadinhoId)) != null) {
-				pedido.getListaSalgadinho().remove(Math.toIntExact(salgadinhoId));
+				
+				Salgadinho salgadinho = pedido.getListaSalgadinho().get(Math.toIntExact(salgadinhoId));
+				
+				pedido.removerSalgadinho(Math.toIntExact(salgadinhoId));
+				
+				System.out.println("id do salgadinho a ser deletado" + salgadinho.getId());
+				
+				//id do salgadinho com id 
+				salgadinhoRepository.deleteById(salgadinho.getId());
+
 				return ResponseEntity.ok().build();
 			}
 		}
 		return ResponseEntity.notFound().build();
 	}
-
-
 
 }

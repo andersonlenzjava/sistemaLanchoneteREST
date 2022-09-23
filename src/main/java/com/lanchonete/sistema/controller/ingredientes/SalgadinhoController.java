@@ -29,7 +29,7 @@ import com.lanchonete.sistema.form.ingredientes.SalgadinhoTipoPreparoForm;
 import com.lanchonete.sistema.service.ingredientes.SalgadinhoService;
 
 @RestController
-@RequestMapping("/salgadinhos")
+@RequestMapping("/ingrediente/salgadinhos")
 public class SalgadinhoController {
 
 	@Autowired

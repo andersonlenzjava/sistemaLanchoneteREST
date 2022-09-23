@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -24,7 +25,7 @@ import com.lanchonete.sistema.form.item.MontarSalgadinhoForm;
 import com.lanchonete.sistema.service.item.MontarSalgadinhoService;
 
 @RestController
-@RequestMapping("/montarSalgadinho")
+@RequestMapping("/pedido/salgadinhos")
 public class MontarSalgadinhoController {
 	
 	@Autowired
@@ -56,9 +57,8 @@ public class MontarSalgadinhoController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> removerSalgadinho(@PathVariable Long id) {
-		return montarSalgadinhoService.removerLanche(id);
+	public ResponseEntity<?> removerSalgadinho(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long salgadinhoId) {
+		return montarSalgadinhoService.removerSalgadinho(pedidoId, salgadinhoId);
 	}
 	
-
 }

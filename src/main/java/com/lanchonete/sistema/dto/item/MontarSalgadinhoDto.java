@@ -7,11 +7,13 @@ import com.lanchonete.sistema.model.ingrediente.SalgadinhoRecheio;
 import com.lanchonete.sistema.model.ingrediente.SalgadinhoTipoPreparo;
 import com.lanchonete.sistema.model.item.Item;
 import com.lanchonete.sistema.model.item.Salgadinho;
+import com.lanchonete.sistema.model.pedido.Pedido;
 
 public class MontarSalgadinhoDto {
 
 	Long id;
 	Item item;
+	Pedido pedido;
 	SalgadinhoMassa salgadinhoMassa;
 	SalgadinhoRecheio salgadinhoRecheio;
 	SalgadinhoTipoPreparo salgadinhoTipoPreparo;
@@ -19,6 +21,7 @@ public class MontarSalgadinhoDto {
 	public MontarSalgadinhoDto (Salgadinho salgadinho) {
 		this.id = salgadinho.getId();
 		this.item = salgadinho.getItem();
+		this.pedido = salgadinho.getPedido();
 		this.salgadinhoMassa = salgadinho.getSalgadinhoMassa();
 		this.salgadinhoRecheio = salgadinho.getSalgadinhoRecheio();
 		this.salgadinhoTipoPreparo = salgadinho.getSalgadinhoTipoPreparo();
@@ -35,6 +38,12 @@ public class MontarSalgadinhoDto {
 	}
 	public void setItem(Item item) {
 		this.item = item;
+	}
+	public Pedido getPedido() {
+		return pedido;
+	}
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 	public SalgadinhoMassa getSalgadinhoMassa() {
 		return salgadinhoMassa;

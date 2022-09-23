@@ -14,21 +14,21 @@ import com.lanchonete.sistema.model.pedido.StatusPedido;
 
 public class PedidoDto {
 
-	Long id;
+	Long pedidoId;
 	private List<Lanche> listaLanche = new ArrayList<>();
 	private List<Pizza> listaPizza = new ArrayList<>();
 	private List<Salgadinho> listaSalgadinho = new ArrayList<>();
 	private String nomeCliente;
-	private BigDecimal valorTotalServico;
-	private BigDecimal valorPago;
-	private BigDecimal troco;
+	private BigDecimal valorTotalServico = BigDecimal.ZERO;
+	private BigDecimal valorPago = BigDecimal.ZERO;
+	private BigDecimal troco = BigDecimal.ZERO;
 	private StatusPedido statusPedido = StatusPedido.ABERTO;
 	
 	public PedidoDto(Pedido pedido) {
-		this.id = pedido.getId();
-		pedido.calculaTaxaServico();
+		this.pedidoId = pedido.getId();
 		this.listaLanche = pedido.getListaLanche();
 		this.listaPizza = pedido.getListaPizza();
+		this.listaSalgadinho = pedido.getListaSalgadinho();
 		this.nomeCliente = pedido.getNomeCliente();
 		this.valorTotalServico = pedido.getTaxaServico();
 		this.valorPago = pedido.getValorPago();
@@ -36,11 +36,11 @@ public class PedidoDto {
 		this.statusPedido = pedido.getStatusPedido();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getPedidoId() {
+		return pedidoId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long pedidoId) {
+		this.pedidoId = pedidoId;
 	}
 	public List<Lanche> getListaLanche() {
 		return listaLanche;

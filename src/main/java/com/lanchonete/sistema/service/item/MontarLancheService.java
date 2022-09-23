@@ -64,8 +64,6 @@ public class MontarLancheService {
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
 			
-			System.out.println("teste 123");
-
 			if (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
 
 				Optional<LancheMolho> lancheMolhoOptional = lancheMolhoRepository.findById(montarLancheForm.getLancheMolhoId());
@@ -75,8 +73,6 @@ public class MontarLancheService {
 				if (lancheMolhoOptional.isPresent() && lancheRecheioOptional.isPresent()
 						&& lancheTipoPaoOptional.isPresent()) {
 					
-					System.out.println("teste 456");
-					
 					LancheMolho lancheMolho = lancheMolhoOptional.get();
 					LancheRecheio lancheRecheio = lancheRecheioOptional.get();
 					LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
@@ -85,10 +81,9 @@ public class MontarLancheService {
 					lancheRepository.save(lanche); // aqui o lanche passa a ter ID 
 
 					pedido.adicionaLanche(lanche);
-
+					
 					pedidoRepository.save(pedido);
 					
-					System.out.println("teste 789");
 					URI uri = uriBuilder.path("/montarLanche/{id}").buildAndExpand(lanche.getId()).toUri();
 					return ResponseEntity.created(uri).body(new MontarLancheDto(lanche));
 				}
@@ -117,32 +112,24 @@ public class MontarLancheService {
 					LancheRecheio lancheRecheio = lancheRecheioOptional.get();
 					LancheTipoPao lancheTipoPao = lancheTipoPaoOptional.get();
 
-					Lanche lanche = pedido.getListaLanche().get(Math.toIntExact(id));
-
-					lanche.setLancheMolho(lancheMolho);
-					lanche.setLancheRecheio(lancheRecheio);
-					lanche.setLancheTipoPao(lancheTipoPao);
-
-					lancheRepository.save(lanche);
-
-					// buscar lanche dentro da lista de pedidos e seta 
-					pedido.getListaLanche().set(Math.toIntExact(lanche.getId()), lanche);
-
+					Lanche lanche = pedido.atualizarLanche(id, lancheMolho, lancheRecheio, lancheTipoPao);
+					
+//					Lanche lanche = pedido.getListaLanche().get(Math.toIntExact(id));
+//
+//					lanche.setLancheMolho(lancheMolho);
+//					lanche.setLancheRecheio(lancheRecheio);
+//					lanche.setLancheTipoPao(lancheTipoPao);
+//	
+					lancheRepository.save(lanche); // será que sobreescreve certo ?
+//
+//					// buscar lanche dentro da lista de pedidos e seta 
+//					pedido.getListaLanche().set(Math.toIntExact(lanche.getId()), lanche);
+					
 					pedidoRepository.save(pedido);
 
 					return ResponseEntity.ok(new MontarLancheDto(lanche));
 				}
 			}
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	// delete
-	public ResponseEntity<?> removerLanche(Long id) {
-		Optional<Lanche> lancheOptional = lancheRepository.findById(id);
-		if (lancheOptional.isPresent()) {
-			lancheRepository.deleteById(id);
-			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}

@@ -66,6 +66,7 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/calculaTroco/{id}")
+	@Transactional
 	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(@PathVariable Long id, @RequestParam(required = true) BigDecimal valorPago) throws Exception {
 		return pedidoService.retornaCalculoTrocoPedido(id, valorPago);
 	} // estado pago se aprovar 
@@ -80,9 +81,9 @@ public class PedidoController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<PedidoDto> atualizarPedido(@RequestBody @Valid PedidoForm pedidoForm,
+	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoForm pedidoForm,
 			UriComponentsBuilder uriBuilder) {
-		return pedidoService.atualizarPedido(pedidoForm, uriBuilder);
+		return pedidoService.atualizarPedido(id, pedidoForm, uriBuilder);
 	}
 	
 	//deletar um pedido 

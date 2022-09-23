@@ -29,7 +29,7 @@ import com.lanchonete.sistema.form.ingredientes.PizzaRecheioForm;
 import com.lanchonete.sistema.service.ingredientes.PizzaService;
 
 @RestController
-@RequestMapping("/pizzas")
+@RequestMapping("/ingrediente/pizzas")
 public class PizzaController {
 
 	@Autowired

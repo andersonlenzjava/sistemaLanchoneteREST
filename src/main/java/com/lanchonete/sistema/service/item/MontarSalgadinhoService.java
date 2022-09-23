@@ -61,84 +61,91 @@ public class MontarSalgadinhoService {
 	public ResponseEntity<MontarSalgadinhoDto> cadastrarSalgadinho(MontarSalgadinhoForm montarSalgadinhoForm,
 			UriComponentsBuilder uriBuilder) {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarSalgadinhoForm.getPedidoId());
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
+		Optional<SalgadinhoMassa> salgadinhoMassaOptional = salgadinhoMassaRepository.findById(montarSalgadinhoForm.getSalgadinhoMassaId());
+		Optional<SalgadinhoRecheio> salgadinhoRecheioOptional = salgadinhoRecheioRepository.findById(montarSalgadinhoForm.getSalgadinhoRecheioId());
+		Optional<SalgadinhoTipoPreparo> salgadinhoTipoPreparoOptional = salgadinhoTipoPreparoRepository.findById(montarSalgadinhoForm.getSalgadinhoTipoPreparoId());
 
-			if (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
+		if (pedidoOptional.isPresent()
+				&& salgadinhoMassaOptional.isPresent() 
+				&& salgadinhoMassaOptional.isPresent() 
+				&& salgadinhoRecheioOptional.isPresent() 
+				&& salgadinhoTipoPreparoOptional.isPresent()) {
+				
+				Pedido pedido = pedidoOptional.get();
 
-				Optional<SalgadinhoMassa> salgadinhoMassaOptional = salgadinhoMassaRepository.findById(montarSalgadinhoForm.getSalgadinhoMassaId());
-				Optional<SalgadinhoRecheio> salgadinhoRecheioOptional = salgadinhoRecheioRepository.findById(montarSalgadinhoForm.getSalgadinhoRecheioId());
-				Optional<SalgadinhoTipoPreparo> salgadinhoTipoPreparoOptional = salgadinhoTipoPreparoRepository.findById(montarSalgadinhoForm.getSalgadinhoTipoPreparoId());
-
-				if (salgadinhoMassaOptional.isPresent() && salgadinhoRecheioOptional.isPresent()
-						&& salgadinhoTipoPreparoOptional.isPresent()) {
+				if ((pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO)) {
 					
-					SalgadinhoMassa salgadinhoMassa = salgadinhoMassaOptional.get();
-					SalgadinhoRecheio salgadinhoRecheio = salgadinhoRecheioOptional.get();
-					SalgadinhoTipoPreparo salgadinhoTipoPreparo = salgadinhoTipoPreparoOptional.get();
-
-					Salgadinho salgadinho = new Salgadinho(salgadinhoMassa, salgadinhoRecheio, salgadinhoTipoPreparo);
-					salgadinhoRepository.save(salgadinho); // aqui o lanche passa a ter ID 
-
-					pedido.adicionaSalgadinho(salgadinho);
-
-					pedidoRepository.save(pedido);
-					
-					URI uri = uriBuilder.path("/montarSalgadinho/{id}").buildAndExpand(salgadinho.getId()).toUri();
-					return ResponseEntity.created(uri).body(new MontarSalgadinhoDto(salgadinho));
+						SalgadinhoMassa salgadinhoMassa = salgadinhoMassaOptional.get();
+						SalgadinhoRecheio salgadinhoRecheio = salgadinhoRecheioOptional.get();
+						SalgadinhoTipoPreparo salgadinhoTipoPreparo = salgadinhoTipoPreparoOptional.get();
+	
+						Salgadinho salgadinho = new Salgadinho(pedido, salgadinhoMassa, salgadinhoRecheio, salgadinhoTipoPreparo);
+						
+						salgadinhoRepository.save(salgadinho); 
+						
+						pedido.adicionaSalgadinho(salgadinho); // operações com os saldos 
+						
+						pedidoRepository.save(pedido); 
+	
+						URI uri = uriBuilder.path("/pedido/salgadinhos/{id}").buildAndExpand(salgadinho.getId()).toUri();
+						return ResponseEntity.created(uri).body(new MontarSalgadinhoDto(salgadinho));
+						}
 				}
-			}
-		}
 		return ResponseEntity.notFound().build();
 	}
 
 	// put
 	public ResponseEntity<MontarSalgadinhoDto> atualizarSalgadinho(Long id, MontarSalgadinhoForm montarSalgadinhoForm) {
+		
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarSalgadinhoForm.getPedidoId());
-		if (pedidoOptional.isPresent()) {
+		Optional<Salgadinho> salgadinhoOptional = salgadinhoRepository.findById(id);
+		Optional<SalgadinhoMassa> salgadinhoMassaOptional = salgadinhoMassaRepository.findById(montarSalgadinhoForm.getSalgadinhoMassaId());
+		Optional<SalgadinhoRecheio> salgadinhoRecheioOptional = salgadinhoRecheioRepository.findById(montarSalgadinhoForm.getSalgadinhoRecheioId());
+		Optional<SalgadinhoTipoPreparo> salgadinhoTipoPreparoOptional = salgadinhoTipoPreparoRepository.findById(montarSalgadinhoForm.getSalgadinhoTipoPreparoId());
+
+		if (pedidoOptional.isPresent()
+				&& salgadinhoOptional.isPresent()
+				&& salgadinhoMassaOptional.isPresent() 
+				&& salgadinhoRecheioOptional.isPresent() 
+				&& salgadinhoTipoPreparoOptional.isPresent()) {
+			
 			Pedido pedido = pedidoOptional.get();
-
-			if (((pedido.getListaSalgadinho().get(Math.toIntExact(id))) != null)
-					&&(pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO)) {
-
-				Optional<SalgadinhoMassa> salgadinhoMassaOptional = salgadinhoMassaRepository.findById(montarSalgadinhoForm.getSalgadinhoMassaId());
-				Optional<SalgadinhoRecheio> salgadinhoRecheioOptional = salgadinhoRecheioRepository.findById(montarSalgadinhoForm.getSalgadinhoRecheioId());
-				Optional<SalgadinhoTipoPreparo> salgadinhoTipoPreparoOptional = salgadinhoTipoPreparoRepository.findById(montarSalgadinhoForm.getSalgadinhoTipoPreparoId());
-
-				if (salgadinhoMassaOptional.isPresent() && salgadinhoRecheioOptional.isPresent()
-						&& salgadinhoTipoPreparoOptional.isPresent()) {
-					
+			Salgadinho salgadinho = salgadinhoOptional.get();
+			
+			if ((salgadinho.getPedido().getId() == pedido.getId()) && (pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO)) {
+				
+					pedido.removerSalgadinho(salgadinho); // operações com os saldos 
+				
 					SalgadinhoMassa salgadinhoMassa = salgadinhoMassaOptional.get();
 					SalgadinhoRecheio salgadinhoRecheio = salgadinhoRecheioOptional.get();
 					SalgadinhoTipoPreparo salgadinhoTipoPreparo = salgadinhoTipoPreparoOptional.get();
-
-					Salgadinho salgadinho = pedido.getListaSalgadinho().get(Math.toIntExact(id));
-
+					
 					salgadinho.setSalgadinhoMassa(salgadinhoMassa);
 					salgadinho.setSalgadinhoRecheio(salgadinhoRecheio);
 					salgadinho.setSalgadinhoTipoPreparo(salgadinhoTipoPreparo);
+					salgadinho.CalculosSalgadinho();
 					
 					salgadinhoRepository.save(salgadinho);
 					
-					pedido.getListaSalgadinho().set(Math.toIntExact(salgadinho.getId()), salgadinho);
+					pedido.adicionaSalgadinho(salgadinho); // operações com os saldos 
 					
-					pedidoRepository.save(pedido);
-
+					pedidoRepository.save(pedido); 
+					
 					return ResponseEntity.ok(new MontarSalgadinhoDto(salgadinho));
-				}
+					}
 			}
-		}
 		return ResponseEntity.notFound().build();
 	}
 
-	// delete
-	public ResponseEntity<?> removerLanche(Long id) {
-		Optional<Salgadinho> salgadinhoOptional = salgadinhoRepository.findById(id);
-		if (salgadinhoOptional.isPresent()) {
-			salgadinhoRepository.deleteById(id);
-			return ResponseEntity.ok().build();
+	public ResponseEntity<?> removerSalgadinho(Long pedidoId, Long salgadinhoId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+		if (pedidoOptional.isPresent()) {
+			Pedido pedido = pedidoOptional.get();
+			
+			if ()
+		
 		}
-		return ResponseEntity.notFound().build();
+		
+		return null;
 	}
-
 }

@@ -29,7 +29,7 @@ import com.lanchonete.sistema.form.ingredientes.LancheTipoPaoForm;
 import com.lanchonete.sistema.service.ingredientes.LancheService;
 
 @RestController
-@RequestMapping("/lanches")
+@RequestMapping("/ingrediente/lanches")
 public class LancheController {
 
 	@Autowired
