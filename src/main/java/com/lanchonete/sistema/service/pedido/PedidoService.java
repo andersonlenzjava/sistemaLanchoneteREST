@@ -7,15 +7,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.lanchonete.sistema.dto.item.MontarLancheDto;
-import com.lanchonete.sistema.dto.item.MontarPizzaDto;
-import com.lanchonete.sistema.dto.item.MontarSalgadinhoDto;
 import com.lanchonete.sistema.dto.pedido.PedidoDto;
 import com.lanchonete.sistema.form.pedido.PedidoForm;
 import com.lanchonete.sistema.model.item.Lanche;
@@ -50,13 +46,13 @@ public class PedidoService {
 	}
 
 	// get por id
-	public ResponseEntity<PedidoDto> listarPedidoPorId(Long id) {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
+	public ResponseEntity<PedidoDto> listarPedidoPorId(Long pedidoId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
 		if (pedidoOptional.isPresent()) {
 			return ResponseEntity.ok(PedidoDto.converterUmPedido(pedidoOptional.get()));
 		}
 		return ResponseEntity.notFound().build();
-	} // CALCULAR OS TOTAIS DE VALOR 
+	} 
 
 	// cadastrar pedido
 	public ResponseEntity<PedidoDto> cadastrarPedido(PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
@@ -67,8 +63,8 @@ public class PedidoService {
 	}
 
 	// atualizar pedido
-	public ResponseEntity<PedidoDto> atualizarPedido(Long id, PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
+	public ResponseEntity<PedidoDto> atualizarPedido(Long pedidoId, PedidoForm pedidoForm, UriComponentsBuilder uriBuilder) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
 		if (pedidoOptional.isPresent()) {
 			
 			Pedido pedido = pedidoOptional.get();
@@ -83,124 +79,45 @@ public class PedidoService {
 		return ResponseEntity.notFound().build();
 	}
 
-	// deletar pedido
-	public ResponseEntity<?> removerPedido(Long id) {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-		if (pedidoOptional.isPresent()) {
-			pedidoRepository.deleteById(id);
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	// Lista de lanches do pedido 
-	public Page<MontarLancheDto> listarPedidoLanches(Long id) throws Exception {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
-			List<Lanche> lanches = pedido.getListaLanche();
-			Page<Lanche> pageLanches = new PageImpl<Lanche>(lanches);// converte um list para um page
-			return MontarLancheDto.converter(pageLanches);
-			// agora converter um page de lanche, para um lancheDTO,
-		} else {
-			throw new Exception("Pedido Inesistente");
-		}
-	}
-
-	//lista de Pizzas do pedido 
-	public Page<MontarPizzaDto> listarPedidoPizzas(Long id) throws Exception {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
-			List<Pizza> pizzas = pedido.getListaPizza();
-			Page<Pizza> pagePizzas = new PageImpl<Pizza>(pizzas);// converte um list para um page
-			return MontarPizzaDto.converter(pagePizzas);
-			// agora converter um page de lanche, para um lancheDTO,
-		} else {
-			throw new Exception("Pedido Inesistente");
-		}
-	}
-
-	//lista de salgadinhos do pedido 
-	public Page<MontarSalgadinhoDto> listarPedidoSalgadinhos(Long id) throws Exception {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
-			List<Salgadinho> salgadinhos = pedido.getListaSalgadinho();
-			Page<Salgadinho> pageSalgadinhos = new PageImpl<Salgadinho>(salgadinhos);// converte um list para um page
-			return MontarSalgadinhoDto.converter(pageSalgadinhos);
-			// agora converter um page de lanche, para um lancheDTO,
-		} else {
-			throw new Exception("Pedido Inesistente");
-		}
-	}
-
 	// retorna o troco no corpo da mensagem 
-	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(Long id, BigDecimal valorPago) throws Exception {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
-			return ResponseEntity.ok(pedido.calcularTroco(valorPago));
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	// deleta um lanche da lista 
-	public ResponseEntity<?> removerLanche(Long pedidoId, Long lancheId) {
+	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(Long pedidoId, BigDecimal valorPago) throws Exception {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
 		if (pedidoOptional.isPresent()) {
 			Pedido pedido = pedidoOptional.get();
 			
-			if (pedido.getListaLanche().get(Math.toIntExact(lancheId)) != null) {
-				pedido.removerLanche(Math.toIntExact(lancheId));
-				
-				Optional<Lanche> lancheOptional = lancheRepository.findById(lancheId);
-				lancheRepository.delete(lancheOptional.get());
-
-				return ResponseEntity.ok().build();
+			if(pedido.getStatusPedido() != StatusPedido.PAGOFINALIZADO) {
+				return ResponseEntity.ok(pedido.calcularTroco(valorPago));
 			}
 		}
 		return ResponseEntity.notFound().build();
 	}
 
-	//delete uma pizza da lista 
-	public ResponseEntity<?> removerPizza(Long pedidoId, Long pizzaId) {
+	// deletar pedido
+	public ResponseEntity<?> removerPedido(Long pedidoId) {
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
 		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
+			// primeiro tem de verificar se tem lanche para poder deletar 
 			
-			if (pedido.getListaPizza().get(Math.toIntExact(pizzaId)) != null) {
-				pedido.removerPizza(Math.toIntExact(pizzaId));
-				
-				Optional<Pizza> pizzaOptional = pizzaRepository.findById(pizzaId);
-				pizzaRepository.delete(pizzaOptional.get());
 
-				return ResponseEntity.ok().build();
-			}
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	//delete um salgadinho da lista 
-	public ResponseEntity<?> removerSalgadinho(Long pedidoId, Long salgadinhoId) {
-		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
-		if (pedidoOptional.isPresent()) {
-			Pedido pedido = pedidoOptional.get();
+			List<Lanche> lancheOptional = lancheRepository.findListLanchesPedido(pedidoId);
+			List<Pizza> pizzaOptional = pizzaRepository.findListPizzasPedido(pedidoId);
+			List<Salgadinho> salgadinhoOptional = salgadinhoRepository.findListSalgadinhosPedido(pedidoId);
 			
-			// id na lista de salgadinhos
-			if (pedido.getListaSalgadinho().get(Math.toIntExact(salgadinhoId)) != null) {
-				
-				Salgadinho salgadinho = pedido.getListaSalgadinho().get(Math.toIntExact(salgadinhoId));
-				
-				pedido.removerSalgadinho(Math.toIntExact(salgadinhoId));
-				
-				System.out.println("id do salgadinho a ser deletado" + salgadinho.getId());
-				
-				//id do salgadinho com id 
-				salgadinhoRepository.deleteById(salgadinho.getId());
-
-				return ResponseEntity.ok().build();
+			if (lancheOptional != null) {
+				lancheRepository.deleteLancheByPedidoId(pedidoId);				
 			}
+			
+			if (pizzaOptional != null) {
+				pizzaRepository.deletePizzaByPedidoId(pedidoId);			
+			}
+			
+			if (salgadinhoOptional != null) {
+				salgadinhoRepository.deleteSalgadinhoByPedidoId(pedidoId);				
+			}
+			
+			pedidoRepository.deleteById(pedidoId);
+
+			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}

@@ -47,10 +47,9 @@ public class Salgadinho  {
 						.add(salgadinhoTipoPreparo.getIngrediente().getPrecoVenda())));
 		
 		this.item.setPesoPrato(salgadinhoMassa.getIngrediente().getPeso() +
-				   salgadinhoRecheio.getIngrediente().getPeso() +
-				   salgadinhoTipoPreparo.getIngrediente().getPeso()); 
+				salgadinhoRecheio.getIngrediente().getPeso() +
+				salgadinhoTipoPreparo.getIngrediente().getPeso()); 
 	}
-
 	public Long getId() {
 		return id;
 	}

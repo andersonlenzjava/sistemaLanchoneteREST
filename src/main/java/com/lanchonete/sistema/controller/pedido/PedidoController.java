@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.lanchonete.sistema.dto.item.MontarLancheDto;
-import com.lanchonete.sistema.dto.item.MontarPizzaDto;
-import com.lanchonete.sistema.dto.item.MontarSalgadinhoDto;
 import com.lanchonete.sistema.dto.pedido.PedidoDto;
 import com.lanchonete.sistema.form.pedido.PedidoForm;
 import com.lanchonete.sistema.service.pedido.PedidoService;
@@ -42,35 +39,10 @@ public class PedidoController {
 		return pedidoService.listarPedidos(paginacao);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<PedidoDto> listarPedidoPorId(@PathVariable Long id) {
-		return pedidoService.listarPedidoPorId(id);
+	@GetMapping("/porId")
+	public ResponseEntity<PedidoDto> listarPedidoPorId(@RequestParam(required = true) Long pedidoId) {
+		return pedidoService.listarPedidoPorId(pedidoId);
 	}
-	
-	@GetMapping("/listLanche/{id}")
-	public Page<MontarLancheDto> listarPedidoLanches(@PathVariable Long id, @PageableDefault(sort = "id", 
-	direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) throws Exception {
-		return pedidoService.listarPedidoLanches(id);
-	}
-	
-	@GetMapping("/listPizza/{id}")
-	public Page<MontarPizzaDto> listarPedidoPizzas(@PathVariable Long id, @PageableDefault(sort = "id", 
-			direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) throws Exception {
-		return pedidoService.listarPedidoPizzas(id);
-	}
-	
-	@GetMapping("/listSalgadinho/{id}")
-	public Page<MontarSalgadinhoDto> listarPedidoSalgadinhos(@PathVariable Long id, @PageableDefault(sort = "id", 
-			direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) throws Exception {
-		return pedidoService.listarPedidoSalgadinhos(id);
-	}
-	
-	@GetMapping("/calculaTroco/{id}")
-	@Transactional
-	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(@PathVariable Long id, @RequestParam(required = true) BigDecimal valorPago) throws Exception {
-		return pedidoService.retornaCalculoTrocoPedido(id, valorPago);
-	} // estado pago se aprovar 
-	
 	
 	@PostMapping
 	@Transactional
@@ -79,39 +51,24 @@ public class PedidoController {
 		return pedidoService.cadastrarPedido(pedidoForm, uriBuilder);
 	}
 	
-	@PutMapping("/{id}")
-	@Transactional
-	public ResponseEntity<PedidoDto> atualizarPedido(@PathVariable Long id, @RequestBody @Valid PedidoForm pedidoForm,
+	@PutMapping
+	@Transactional 
+	public ResponseEntity<PedidoDto> atualizarPedido(@RequestParam(required = true) Long pedidoId, @RequestBody @Valid PedidoForm pedidoForm,
 			UriComponentsBuilder uriBuilder) {
-		return pedidoService.atualizarPedido(id, pedidoForm, uriBuilder);
+		return pedidoService.atualizarPedido(pedidoId, pedidoForm, uriBuilder);
 	}
 	
-	//deletar um pedido 
-	@DeleteMapping("/{id}")
+	@GetMapping("/calculaTroco/{pedidoId}")
 	@Transactional
-	public ResponseEntity<?> removerPedido(@PathVariable Long id) {
-		return pedidoService.removerPedido(id);
+	public ResponseEntity<BigDecimal> retornaCalculoTrocoPedido(@PathVariable Long pedidoId, @RequestParam(required = true) BigDecimal valorPago) throws Exception {
+		return pedidoService.retornaCalculoTrocoPedido(pedidoId, valorPago);
+	} // estado pago se aprovar 
+
+	//deletar um pedido  // remover os itens deste pedido também idependente do seu status 
+	@DeleteMapping("/{pedidoId}")
+	@Transactional
+	public ResponseEntity<?> removerPedido(@PathVariable Long pedidoId) {
+		return pedidoService.removerPedido(pedidoId);
 	}
-	
-	//deletar um lanche
-	@DeleteMapping("/removerLanchePedido")
-	@Transactional
-	public ResponseEntity<?> removerLanche(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long lancheId) {
-		return pedidoService.removerLanche(pedidoId, lancheId);
-	}
-	
-	//deletar uma pizza
-	@DeleteMapping("/removerPizzaPedido")
-	@Transactional
-	public ResponseEntity<?> removerPizza(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long pizzaId) {
-		return pedidoService.removerPizza(pedidoId, pizzaId);
-	}
-		
-	//deletar um salgadinho
-	@DeleteMapping("/removerSalgadinhoPedido")
-	@Transactional
-	public ResponseEntity<?> removerSalgadinho(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long salgadinhoId) {
-		return pedidoService.removerSalgadinho(pedidoId, salgadinhoId);
-	}	
 	
 }

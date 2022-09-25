@@ -1,8 +1,6 @@
 package com.lanchonete.sistema.model.pedido;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,17 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import com.lanchonete.sistema.model.ingrediente.LancheMolho;
-import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
-import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
-import com.lanchonete.sistema.model.ingrediente.PizzaBorda;
-import com.lanchonete.sistema.model.ingrediente.PizzaMolho;
-import com.lanchonete.sistema.model.ingrediente.PizzaRecheio;
-import com.lanchonete.sistema.model.ingrediente.SalgadinhoMassa;
-import com.lanchonete.sistema.model.ingrediente.SalgadinhoRecheio;
-import com.lanchonete.sistema.model.ingrediente.SalgadinhoTipoPreparo;
 import com.lanchonete.sistema.model.item.Lanche;
 import com.lanchonete.sistema.model.item.Pizza;
 import com.lanchonete.sistema.model.item.Salgadinho;
@@ -45,9 +33,7 @@ public class Pedido {
 	}
 	
 	public void adicionaPizza(Pizza pizza) {
-		this.listaPizza.add(pizza); // adiciona na lista 
 		this.valorTotalServico = this.valorTotalServico.add(pizza.getItem().getTotalItem()); // adiciona no total do pedido 
-		this.statusPedido = StatusPedido.PROCESSANDO;
 	}
 
 	public void adicionaSalgadinho(Salgadinho salgadinho) {
@@ -55,49 +41,15 @@ public class Pedido {
 	}
 
 	public void adicionaLanche(Lanche lanche) {
-		this.listaLanche.add(lanche);
 		this.valorTotalServico = this.valorTotalServico.add(lanche.getItem().getTotalItem());
-		this.statusPedido = StatusPedido.PROCESSANDO;
 	}
 	
-	public Lanche atualizarLanche (Long id, LancheMolho lancheMolho, LancheRecheio lancheRecheio, LancheTipoPao lancheTipoPao) {
-		Lanche lanche = this.listaLanche.get(Math.toIntExact(id));
+	public void removerLanche(Lanche lanche) {
 		this.valorTotalServico = this.valorTotalServico.subtract(lanche.getItem().getTotalItem());
-		lanche = new Lanche(lancheTipoPao, lancheRecheio, lancheMolho);
-		this.valorTotalServico = this.valorTotalServico.add(lanche.getItem().getTotalItem());
-		this.listaLanche.set(Math.toIntExact(id), lanche);
-		return lanche;
-	}
-	
-	public Pizza atualizarPizza(Long id, PizzaBorda pizzaBorda, PizzaMolho pizzaMolho, PizzaRecheio pizzaRecheio) {
-		Pizza pizza = this.listaPizza.get(Math.toIntExact(id));
-		this.valorTotalServico = this.valorTotalServico.subtract(pizza.getItem().getTotalItem());
-		pizza = new Pizza(pizzaBorda, pizzaMolho, pizzaRecheio);
-		this.valorTotalServico = this.valorTotalServico.add(pizza.getItem().getTotalItem());
-		this.listaPizza.set(Math.toIntExact(id), pizza);
-		return pizza;
-	}
-	
-	public Salgadinho atualizarSalgadinho(Long id, SalgadinhoMassa salgadinhoMassa,
-			SalgadinhoRecheio salgadinhoRecheio, SalgadinhoTipoPreparo salgadinhoTipoPreparo) {
-		Salgadinho salgadinho = this.listaSalgadinho.get(Math.toIntExact(id));
-		this.valorTotalServico = this.valorTotalServico.subtract(salgadinho.getItem().getTotalItem());
-		salgadinho = new Salgadinho(salgadinhoMassa, salgadinhoRecheio, salgadinhoTipoPreparo);
-		this.valorTotalServico = this.valorTotalServico.add(salgadinho.getItem().getTotalItem());
-		this.listaSalgadinho.set(Math.toIntExact(id), salgadinho);
-		return salgadinho;
-	}
-	
-	public void removerLanche(int id) {
-		Lanche lanche = this.listaLanche.get(Math.toIntExact(id));
-		this.valorTotalServico = this.valorTotalServico.subtract(lanche.getItem().getTotalItem());
-		this.listaLanche.remove(id);
 	}
 
-	public void removerPizza(int id) {
-		Pizza pizza = this.listaPizza.get(Math.toIntExact(id));
+	public void removerPizza(Pizza pizza) {
 		this.valorTotalServico = this.valorTotalServico.subtract(pizza.getItem().getTotalItem());
-		this.listaLanche.remove(id);
 	}
 
 	public void removerSalgadinho(Salgadinho salgadinho) {
@@ -127,24 +79,6 @@ public class Pedido {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public List<Lanche> getListaLanche() {
-		return listaLanche;
-	}
-	public void setListaLanche(List<Lanche> listaLanche) {
-		this.listaLanche = listaLanche;
-	}
-	public List<Pizza> getListaPizza() {
-		return listaPizza;
-	}
-	public void setListaPizza(List<Pizza> listaPizza) {
-		this.listaPizza = listaPizza;
-	}
-	public List<Salgadinho> getListaSalgadinho() {
-		return listaSalgadinho;
-	}
-	public void setListaSalgadinho(List<Salgadinho> listaSalgadinho) {
-		this.listaSalgadinho = listaSalgadinho;
 	}
 	public String getNomeCliente() {
 		return nomeCliente;

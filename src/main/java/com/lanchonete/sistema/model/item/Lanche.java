@@ -34,18 +34,23 @@ public class Lanche {
 		this.lancheRecheio = lancheRecheio;
 		this.lancheMolho = lancheMolho;
 		this.item = new Item();
+		this.CalculosPrato();
 		
+	}
+	
+	public void CalculosPrato() {
 		this.item.setTotalItem(   // se refere a esta classe 
 				lancheTipoPao.getIngrediente().getPrecoVenda()
 				.add(lancheRecheio.getIngrediente().getPrecoVenda()
-				.add(lancheMolho.getIngrediente().getPrecoVenda())));
+						.add(lancheMolho.getIngrediente().getPrecoVenda())));
 		
 		this.item.setPesoPrato(
 				lancheTipoPao.getIngrediente().getPeso() +
 				lancheRecheio.getIngrediente().getPeso() +
 				lancheMolho.getIngrediente().getPeso()) ;
+		
 	}
-	
+
 	public Lanche() {
 	}
 	

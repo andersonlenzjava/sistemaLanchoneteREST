@@ -32,14 +32,15 @@ public class MontarSalgadinhoController {
 	private MontarSalgadinhoService montarSalgadinhoService;
 	
 	@GetMapping
-	public Page<MontarSalgadinhoDto> listarSalgadinhos(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10)
-	Pageable paginacao) {
-		return montarSalgadinhoService.listarSalgadinhos(paginacao);
+	public Page<MontarSalgadinhoDto> listarSalgadinhosPedido(@RequestParam(required = true) Long pedidoId, 
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+		return montarSalgadinhoService.listarSalgadinhosPedido(pedidoId, paginacao);
 	}
 	
-	@GetMapping("/{id}") //AQUI JÁ TRAZ TODAS AS INFO DO ITEM TAMBÉM 
-	public ResponseEntity<MontarSalgadinhoDto> listarSalgadinhoPorId(@PathVariable Long id) {
-		return montarSalgadinhoService.listarSalgadinhoPorId(id);
+	@GetMapping("/{salgadinhoId}") 
+	public ResponseEntity<MontarSalgadinhoDto> listarSalgadinhoPedidoPorId(@PathVariable Long salgadinhoId, 
+			@RequestParam(required = true) Long pedidoId) {
+		return montarSalgadinhoService.listarSalgadinhoPedidoPorId(pedidoId, salgadinhoId);
 	}
 	
 	@PostMapping
@@ -49,16 +50,16 @@ public class MontarSalgadinhoController {
 		return montarSalgadinhoService.cadastrarSalgadinho(montarSalgadinhoForm, uriBuilder);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{salgadinhoId}")
 	@Transactional
-	public ResponseEntity<MontarSalgadinhoDto> atualizarSalgadinho(@PathVariable Long id, @RequestBody @Valid MontarSalgadinhoForm montarSalgadinhoForm) {
-		return montarSalgadinhoService.atualizarSalgadinho(id, montarSalgadinhoForm);
+	public ResponseEntity<MontarSalgadinhoDto> atualizarSalgadinho(@PathVariable Long salgadinhoId, @RequestBody @Valid MontarSalgadinhoForm montarSalgadinhoForm) {
+		return montarSalgadinhoService.atualizarSalgadinho(salgadinhoId, montarSalgadinhoForm);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{salgadinhoId}")
 	@Transactional
-	public ResponseEntity<?> removerSalgadinho(@RequestParam(required = true) Long pedidoId, @RequestParam(required = true) Long salgadinhoId) {
-		return montarSalgadinhoService.removerSalgadinho(pedidoId, salgadinhoId);
+	public ResponseEntity<?> removerSalgadinhoPedido(@RequestParam(required = true) Long pedidoId, @PathVariable Long salgadinhoId) {
+		return montarSalgadinhoService.removerSalgadinhoPedido(pedidoId, salgadinhoId);
 	}
 	
 }

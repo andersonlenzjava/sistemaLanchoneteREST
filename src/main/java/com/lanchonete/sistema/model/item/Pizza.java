@@ -34,19 +34,21 @@ public class Pizza {
 		this.pizzaMolho = pizzaMolho;
 		this.pizzaRecheio = pizzaRecheio;
 		this.item = new Item();
-		
+		this.CalculosPizza();
+	}
+
+	public Pizza() {
+	}
+	
+	public void CalculosPizza() {
 		this.item.setTotalItem(pizzaBorda.getIngrediente().getPrecoVenda()
 				.add(pizzaMolho.getIngrediente().getPrecoVenda()
 						.add(pizzaRecheio.getIngrediente().getPrecoVenda()))); 
 		
 		this.item.setPesoPrato(pizzaBorda.getIngrediente().getPeso() +
-				   pizzaMolho.getIngrediente().getPeso() +
-				   pizzaRecheio.getIngrediente().getPeso()); 
+				pizzaMolho.getIngrediente().getPeso() +
+				pizzaRecheio.getIngrediente().getPeso()); 
 	}
-	
-	public Pizza() {
-	}
-	
 	public Long getId() {
 		return id;
 	}

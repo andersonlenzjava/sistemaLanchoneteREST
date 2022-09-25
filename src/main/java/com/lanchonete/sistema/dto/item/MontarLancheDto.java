@@ -7,11 +7,13 @@ import com.lanchonete.sistema.model.ingrediente.LancheRecheio;
 import com.lanchonete.sistema.model.ingrediente.LancheTipoPao;
 import com.lanchonete.sistema.model.item.Item;
 import com.lanchonete.sistema.model.item.Lanche;
+import com.lanchonete.sistema.model.pedido.Pedido;
 
 public class MontarLancheDto {
 
 	Long id;
 	Item item;
+	Pedido pedido;
 	LancheTipoPao lancheTipoPao;
 	LancheRecheio lancheRecheio;
 	LancheMolho lancheMolho;
@@ -19,6 +21,7 @@ public class MontarLancheDto {
 	public MontarLancheDto(Lanche lanche) {
 		this.id = lanche.getId();
 		this.item = lanche.getItem();
+		this.pedido = lanche.getPedido();
 		this.lancheTipoPao = lanche.getLancheTipoPao();
 		this.lancheRecheio = lanche.getLancheRecheio();
 		this.lancheMolho = lanche.getLancheMolho();
@@ -36,6 +39,12 @@ public class MontarLancheDto {
 	}
 	public void setItem(Item item) {
 		this.item = item;
+	}
+	public Long getPedido() {
+		return pedido.getId();
+	}
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 	public LancheTipoPao getLancheTipoPao() {
 		return lancheTipoPao;
