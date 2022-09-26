@@ -110,33 +110,13 @@ public class MontarPizzaService {
 
 		Optional<Pedido> pedidoOptional = pedidoRepository.findById(montarPizzaForm.getPedidoId());
 		Optional<Pizza> pizzaOptional = pizzaRepository.findById(pizzaId);
-		Optional<PizzaBorda> pizzaBordaOptional = pizzaBordaRepository.findById(montarPizzaForm.getPizzaBordaId());
+		Optional<PizzaBorda> pizzaBordaOptional = pizzaBordaRepository.findById(montarPizzaForm.getPizzaBordaId()); // 3,4,5
 		Optional<PizzaMolho> pizzaMolhoOptional = pizzaMolhoRepository.findById(montarPizzaForm.getPizzaMolhoId());
 		Optional<PizzaRecheio> pizzaRecheioOptional = pizzaRecheioRepository.findById(montarPizzaForm.getPizzaRecheioId());
 		
-		if(pedidoOptional.isPresent()) {
-			System.out.println("-==========================pedido Presente ================---");
-		}
-		
-		if(pizzaOptional.isPresent()) {
-			System.out.println("-==========================pizzaOptional Presente ================---");
-		}
-		
-		if(pizzaBordaOptional.isPresent()) {
-			System.out.println("-==========================pizzaBordaOptional Presente ================---");
-		}
-		
-		if(pizzaMolhoOptional.isPresent()) {
-			System.out.println("-==========================pizzaMolhoOptional Presente ================---");
-		}
-		
-		if(pizzaRecheioOptional.isPresent()) {
-			System.out.println("-==========================pizzaRecheioOptional Presente ================---");
-		}
-		
 		if (pedidoOptional.isPresent() 
 				&& pizzaOptional.isPresent()
-//				&& pizzaBordaOptional.isPresent()
+				&& pizzaBordaOptional.isPresent()
 				&& pizzaMolhoOptional.isPresent()
 				&& pizzaRecheioOptional.isPresent()) {
 			

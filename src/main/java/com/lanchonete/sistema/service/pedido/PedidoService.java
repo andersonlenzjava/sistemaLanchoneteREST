@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.lanchonete.sistema.dto.pedido.PedidoDto;
+import com.lanchonete.sistema.dto.pedido.PedidoDtoCompleto;
 import com.lanchonete.sistema.form.pedido.PedidoForm;
 import com.lanchonete.sistema.model.item.Lanche;
 import com.lanchonete.sistema.model.item.Pizza;
@@ -52,6 +53,48 @@ public class PedidoService {
 			return ResponseEntity.ok(PedidoDto.converterUmPedido(pedidoOptional.get()));
 		}
 		return ResponseEntity.notFound().build();
+	} 
+	
+	//get por id completo
+	public ResponseEntity<PedidoDtoCompleto> listarPedidoCompletoPorId(Long pedidoId) {
+		Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+		if (pedidoOptional.isPresent()) {
+			
+			List<Lanche> findListLanchesPedido = lancheRepository.findListLanchesPedido(pedidoId);
+			List<Pizza> findListPizzasPedido = pizzaRepository.findListPizzasPedido(pedidoId);
+			List<Salgadinho> findListSalgadinhosPedido = salgadinhoRepository.findListSalgadinhosPedido(pedidoId);
+			
+			return ResponseEntity.ok(PedidoDtoCompleto.converterUmPedido(pedidoOptional.get(), findListLanchesPedido, 
+					findListPizzasPedido, findListSalgadinhosPedido));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	// Get Aberto
+	public Page<PedidoDto> listarPedidosAbertos(Pageable paginacao) {
+		Page<Pedido> pedidos = pedidoRepository.findByStatusPedido(StatusPedido.ABERTO, paginacao);
+		if(pedidos != null) {
+			return PedidoDto.converter(pedidos);
+		}
+		return null;
+	} 
+
+	//Get Processando
+	public Page<PedidoDto> listarPedidosProcessando(Pageable paginacao) {
+		Page<Pedido> pedidos = pedidoRepository.findByStatusPedido(StatusPedido.PROCESSANDO, paginacao);
+		if(pedidos != null) {
+			return PedidoDto.converter(pedidos);
+		}
+		return null;
+	} 
+
+	//Get PagoFinalizado
+	public Page<PedidoDto> listarPedidosPagoFinalizado(Pageable paginacao) {
+		Page<Pedido> pedidos = pedidoRepository.findByStatusPedido(StatusPedido.PAGOFINALIZADO, paginacao);
+		if(pedidos != null) {
+			return PedidoDto.converter(pedidos);
+		}
+		return null;
 	} 
 
 	// cadastrar pedido
@@ -121,5 +164,8 @@ public class PedidoService {
 		}
 		return ResponseEntity.notFound().build();
 	}
+
+	
+	
 
 }

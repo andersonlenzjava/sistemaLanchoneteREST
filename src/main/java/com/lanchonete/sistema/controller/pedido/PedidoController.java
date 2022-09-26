@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.lanchonete.sistema.dto.pedido.PedidoDto;
+import com.lanchonete.sistema.dto.pedido.PedidoDtoCompleto;
 import com.lanchonete.sistema.form.pedido.PedidoForm;
 import com.lanchonete.sistema.service.pedido.PedidoService;
 
@@ -39,9 +40,32 @@ public class PedidoController {
 		return pedidoService.listarPedidos(paginacao);
 	}
 	
-	@GetMapping("/porId")
-	public ResponseEntity<PedidoDto> listarPedidoPorId(@RequestParam(required = true) Long pedidoId) {
+	@GetMapping("/porId/{pedidoId}")
+	public ResponseEntity<PedidoDto> listarPedidoPorId(@PathVariable Long pedidoId) {
 		return pedidoService.listarPedidoPorId(pedidoId);
+	}
+	
+	@GetMapping("/pedidoCompleto/porId/{pedidoId}")
+	public ResponseEntity<PedidoDtoCompleto> listarPedidoCompletoPorId(@PathVariable Long pedidoId) {
+		return pedidoService.listarPedidoCompletoPorId(pedidoId);
+	}
+	
+	@GetMapping("/abertos")
+	public Page<PedidoDto> listarPedidosAbertos(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10)
+	Pageable paginacao) {
+		return pedidoService.listarPedidosAbertos(paginacao);
+	}
+	
+	@GetMapping("/processando")
+	public Page<PedidoDto> listarPedidosProcessando(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10)
+	Pageable paginacao) {
+		return pedidoService.listarPedidosProcessando(paginacao);
+	}
+	
+	@GetMapping("/pagofinalizado")
+	public Page<PedidoDto> listarPedidosPagoFinalizado(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10)
+	Pageable paginacao) {
+		return pedidoService.listarPedidosPagoFinalizado(paginacao);
 	}
 	
 	@PostMapping
