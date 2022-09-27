@@ -32,6 +32,8 @@ import com.lanchonete.sistema.service.ingredientes.LancheService;
 @RequestMapping("/ingrediente/lanches")
 public class LancheController {
 
+	// linha inserida online 
+	
 	@Autowired
 	private LancheService lancheService;
 	
