@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import com.lanchonete.sistema.model.item.Lanche;
 import com.lanchonete.sistema.model.item.Pizza;
 import com.lanchonete.sistema.model.item.Salgadinho;
