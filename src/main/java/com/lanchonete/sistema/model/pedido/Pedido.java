@@ -28,6 +28,7 @@ public class Pedido {
 	public Pedido() {
 	}
 	
+	
 	public Pedido(String nomeCliente) {
 		this.nomeCliente = nomeCliente;
 	}
