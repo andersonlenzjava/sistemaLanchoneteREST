@@ -1,0 +1,65 @@
+https://www.computersciencemaster.com.br/exercicio-sistema-de-lanchonete/
+
+Este sistema organiza os pedidos de uma lanchonete que possui três tipos de item:
+
+Pizza
+
+Lanche 
+
+Salgadinho
+
+cada um dos pratos é composto por três diferentes ingredientes:
+
+Pizza
+	- Borda
+	- Recheio
+	- Molho
+Lanche 
+	- Molho
+	- Recheio
+	- TipoPao
+Salgadinho
+	- Massa
+	- Recheio
+	- TipoPreparo
+	
+O sistema permite cadastrar diferentes tipos de ingredientes, que serão utilizados para montar os pratos.
+
+Os pratos são vinculados a um pedido já existente.
+
+Os pratos são montados com os ingredientes cadastrados.
+
+A medida que os ingredientes são cadastrados, o item automaticamente calcula o peso do prato e o seu valor.
+
+Os pedidos tem 3 status:
+
+Aberto quando não possui nenhum item vinculado.
+Processando quando possui algum item vinculado.
+PagoFinalizado quando já foi realizado o pagamento. 
+
+O sistema acusa se tiver algum item vencido, lançando uma exception (ESTA IMPLEMENTAÇÃO AINDA FALTA).
+
+Conforme os itens cadastrados o pedido vai calculando o valor total.
+
+Ao retirar algum item, ou alterar a sua composição tudo é atualizado automaticamente.
+
+É possivel registrar os itens e assim monitorar quais são os ingredientes mais requisitados.
+
+O sistema gera uma nota fiscal simbolica com os itens do pedido( via JSON). 
+
+
+
+O sistema é implementado via REST, com as camadas:
+
+Controller com o RestController disponibilizando os end-points.
+
+Alguns end-points utilizam form para a entrada de dados via JSON, permitindo a validação. 
+
+Service que é acionada pelos end-points centraliza o processamento operando os objetos do model, e de acordo 
+com as regras de negócio relacionado a montagens dos itens, persistindo no banco de dados via repository as modificações.
+
+No Repository são realizadas as buscas dos objetos no banco, e a persistência após as operações. 
+
+Após realizar as lógicas de negócio em alguns pontos são retornados os DTOs, retornando somente os atributos 
+dos objetos que são de interesse do usuário, desvinculando o acesso direto ao banco de daodos. 
+
